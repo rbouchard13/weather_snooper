@@ -100,6 +100,7 @@ function forecastDay(i) {
 	d.setDate(d.getDate() + i);
 	let text = d.toString();
 	var dtArr = text.split(" ");
+	document.getElementById("timeStamp").innerHTML = "at " + dtArr[4] + "";
 	let fDay = dtArr[0] + " " + dtArr[1] + " " + dtArr[2] + " " + dtArr[3];
 	return fDay;
 }

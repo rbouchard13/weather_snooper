@@ -14,14 +14,17 @@
 <div id="main">
 	<div id="mySidenav" class="sidenav">
   		<Span class="closebtn" onclick="closeNav()">&times;</span>
-			<div id="svnDay"></div>
+			<div id="forecast">Your 7 Day Forecast
+				<div id="svnDay"></div>
+			</div>
 	</div>
 	<div id="map"></div>
 	<div id="curdetails">
-		<input type="text" id="zipsearch" placeholder="Search by ZIP Code" style="margin-right:10px;"><button class="button1" onClick="">GO!</button>
+		<input type="text" id="zipsearch" placeholder="Search by ZIP Code" style="margin-right:10px;"><button class="button1" onClick="zipSearch()">GO!</button>
 		<div style="margin-top: 10px;">Current Conditions
 			<div style='margin-left: 10px;'>
-					<div id="currIcon">&nbsp<span id="currDetail"></span></div>
+					<div id="currIcon">&nbsp</div>
+					<div id="currDetail"></div>
 					<div>Temp:&nbsp<span id="currTemp"></span></div>
 					<div>Feels Like:&nbsp<span id="realFeel"></span></div>
 					<div>Humidity:&nbsp<span id="currHumid"></span></div>

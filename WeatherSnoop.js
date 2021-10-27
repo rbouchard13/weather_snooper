@@ -74,8 +74,9 @@ function addData(data) {
 function getForecast(data) {
 	let str = "";
 	for (i = 1; i <= 7; i++) {
+		let fday = forecastDay(i);
 		if(str === '') {
-			str = "<div class='row'><hr><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
+			str = "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
 				"<br>" + data.daily[i].weather[0].description + "</div>" +
 				"<div class='col' style='margin-top: 10px;'>High: " + Math.round(data.daily[i].temp.max) + "&#013" +
 				"<br>Day Feel: " + Math.round(data.daily[i].feels_like.day) + "&#013" +
@@ -83,7 +84,7 @@ function getForecast(data) {
 				"<br>Night Feel: " + Math.round(data.daily[i].feels_like.night) + "&#013" +
 				"<br>humidity: " + data.daily[i].humidity + "&#37</div></div>";}
 		else {
-			str += "<div class='row'><hr><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
+			str += "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
 				"<br>" + data.daily[i].weather[0].description + "</div>" +
 				"<div class='col' style='margin-top: 10px;'>High: " + Math.round(data.daily[i].temp.max) + "&#013" +
 				"<br>Day Feel: " + Math.round(data.daily[i].feels_like.day) + "&#013" +
@@ -92,6 +93,15 @@ function getForecast(data) {
 				"<br>humidity: " + data.daily[i].humidity + "&#37</div></div>";}
 	};
 	return str; 
+}
+
+function forecastDay(i) {
+	var d= new Date();
+	d.setDate(d.getDate() + i);
+	let text = d.toString();
+	var dtArr = text.split(" ");
+	let fDay = dtArr[0] + " " + dtArr[1] + " " + dtArr[2] + " " + dtArr[3];
+	return fDay;
 }
 
 function alertsPresent(marker, data){
@@ -122,3 +132,4 @@ function closeNav() {
 
 
 window.onload = getLocation;
+setInterval(function(){showPosition(lat,lng);}, 300000);

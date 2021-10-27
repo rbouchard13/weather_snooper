@@ -59,7 +59,7 @@ async function showPosition(lat,lng) {
 }
 
 function addData(data) {
-		document.getElementById("currIcon").innerHTML = "<img src='http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png' style='width: 20%;'>";
+		document.getElementById("currIcon").innerHTML = "<img src='https://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png' style='width: 20%;'>";
 		document.getElementById("currDetail").innerHTML = data.current.weather[0].description ; 
 		document.getElementById("currTemp").innerHTML = "" + Math.round(data.current.temp) + "&#8457";
 		document.getElementById("realFeel").innerHTML = "" + Math.round(data.current.feels_like) + "&#8457";
@@ -76,7 +76,7 @@ function getForecast(data) {
 	for (i = 0; i <= 7; i++) {
 		let fday = forecastDay(i);
 		if(str === '') {
-			str = "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
+			str = "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='https://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
 				"<br>" + data.daily[i].weather[0].description + "</div>" +
 				"<div class='col' style='margin-top: 10px;'>High: " + Math.round(data.daily[i].temp.max) + "&#013" +
 				"<br>Day Feel: " + Math.round(data.daily[i].feels_like.day) + "&#013" +
@@ -84,7 +84,7 @@ function getForecast(data) {
 				"<br>Night Feel: " + Math.round(data.daily[i].feels_like.night) + "&#013" +
 				"<br>humidity: " + data.daily[i].humidity + "&#37</div></div>";}
 		else {
-			str += "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
+			str += "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='https://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +
 				"<br>" + data.daily[i].weather[0].description + "</div>" +
 				"<div class='col' style='margin-top: 10px;'>High: " + Math.round(data.daily[i].temp.max) + "&#013" +
 				"<br>Day Feel: " + Math.round(data.daily[i].feels_like.day) + "&#013" +

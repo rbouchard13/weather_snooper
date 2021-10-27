@@ -73,7 +73,7 @@ function addData(data) {
 
 function getForecast(data) {
 	let str = "";
-	for (i = 1; i <= 7; i++) {
+	for (i = 0; i <= 7; i++) {
 		let fday = forecastDay(i);
 		if(str === '') {
 			str = "<div class='row' style='margin-left: 10px;'><hr><center>" + fday + "</center></div><div class='row'><div class='col'><img src='http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png' style='width: 30%;'>" +

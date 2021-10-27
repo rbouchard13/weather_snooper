@@ -1,8 +1,16 @@
 var lat;
 var lng;
 var url;
+var markers = [];
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 function getLocation() {
+	var element = document.getElementById('map');
+	map = new mapboxgl.Map({
+  		container: 'map',
+  		style: 'mapbox://styles/mapbox/satellite-v9',
+		center: [-98.35, 39.5],
+  		zoom: 4,
+	});
   	if (navigator.geolocation) {
     		navigator.geolocation.getCurrentPosition(getUserPosition);
   	} else {
@@ -23,19 +31,15 @@ async function zipSearch() {
 	var response = await fetch(url);
 	var data = await response.json();
 	lat = data.coord.lat; lng = data.coord.lon;
+	markers.forEach((item) => {item.remove();});
+	markers = [];
 	showPosition(lat,lng);
 }
-async function showPosition(lat,lng) {	
-	var element = document.getElementById('map');
-	map = new mapboxgl.Map({
-  		container: 'map',
-  		style: 'mapbox://styles/mapbox/satellite-v9',
-		center: [lng, lat],
-  		zoom: 13,
-	});
+
+async function showPosition(lat,lng) {
 	url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lng + '&units=imperial&appid=e40d95c703aed46604f8e84a0b8291c6';
 	var response = await fetch(url);
-	var data = await response.json();
+	var data = await response.json(); console.log(data);
 	addData(data);
 		var marker = new mapboxgl.Marker({
 			color: "#18fc03"
@@ -44,7 +48,12 @@ async function showPosition(lat,lng) {
 		marker.setLngLat([lng, lat]);
 			if (data.alerts){alertsPresent(marker, data);}
 		marker.addTo(map);
-		marker = true;
+		markers.push(marker);
+		map.flyTo({
+			center: [lng, lat],
+			zoom: 13,
+			essential: true
+		});
 		let strForecast = getForecast(data);
 		document.getElementById("svnDay").innerHTML = "<center>" + strForecast + "</center>";
 }
@@ -62,7 +71,7 @@ function addData(data) {
 		document.getElementById("currPressure").innerHTML = "" + bp + "in";
 }
 
-function getForecast(data) {console.log(data);
+function getForecast(data) {
 	let str = "";
 	for (i = 1; i <= 7; i++) {
 		if(str === '') {

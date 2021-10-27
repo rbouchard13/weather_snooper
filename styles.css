@@ -77,6 +77,16 @@ body {
 	color: #8d32a8;
 	font-family: 'Acme', sans-serif;
 	background-color: #1f2e2e;
+	font-size: 15px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+#forecast {
+	text-align: center;
+	color: #8d32a8;
+	font-family: 'Acme', sans-serif;
+	background-color: #1f2e2e;
 	font-size: 30px;
 }
 

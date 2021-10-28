@@ -40,6 +40,7 @@ async function showPosition(lat,lng) {
 	url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lng + '&units=imperial&appid=e40d95c703aed46604f8e84a0b8291c6';
 	var response = await fetch(url);
 	var data = await response.json(); console.log(data);
+	if (response.status === 404){alert("Please enter a valid zip code"); return}
 	addData(data);
 		var marker = new mapboxgl.Marker({
 			color: "#18fc03"

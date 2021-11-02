@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
 	<title>Weather Snooper</title>
     	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -12,31 +11,32 @@
 </head>
 <body>
 <div id="main">
+
 	<div id="mySidenav" class="sidenav">
-  		<Span class="closebtn" onclick="closeNav()">&times;</span>
+  		<div class="closebtn" onclick="closeNav()">&times;</div>
 			<div id="forecast">Your Weekly Forecast
 				<div id="svnDay"></div>
 			</div>
+			<div id="noaa">Forecast Data Provided by<br><img src="images/noaa.png" style="opacity: 1.0; width: 50%;"></div>
 	</div>
 	<div id="map"></div>
 	<div id="curdetails">
 		<input type="text" id="zipsearch" placeholder="Search by ZIP Code" style="margin-right:10px;"><button class="button1" onClick="zipSearch()">GO!</button>
-		<div style="margin-top: 10px;">Current Conditions<span id="timeStamp" style="margin-left: 10px;"></span>
-			<div style='margin-left: 10px;'>
-					<div id="currIcon">&nbsp</div>
-					<div id="currDetail"></div>
-					<div>Temp:&nbsp<span id="currTemp"></span></div>
-					<div>Feels Like:&nbsp<span id="realFeel"></span></div>
-					<div>Humidity:&nbsp<span id="currHumid"></span></div>
-					<div>Dew Pt:&nbsp<span id="currDew"></span></div>
-					<div>Wind Speed:&nbsp<span id="currWind"></span></div>
-					<div>Pressure:&nbsp<span id="currPressure"></span></div>
-				</div>
-		</div>
-		<center><button class="button1" onClick="showForecast()" style="margin-top: 20px;">Weekly Forecast</Button><center>
+		<div style="margin-top: 10px;" class="row"><center>Current Conditions @ <span id="station"></span></center></div>
+			<div id="currDetail"></div>
+			<div id="currIcon"></div>
+			<div style="margin-top: 10px;">Temp:<span id="currTemp" style="margin-left: 5px;"></span></div>
+			<div>Humidity:<span id="currHumid" style="margin-left: 5px;"></span></div>
+			<div>Dew Pt:<span id="currDew" style="margin-left: 5px;"></span></div>
+			<div>Wind:<span id="currWind" style="margin-left: 5px;"></span></div>
+			<div>Pressure:<span id="currPressure" style="margin-left: 5px;"></span></div>
+		<center>
+			<button class="button1" onClick="openNav()" style="margin-top: 20px;">Weekly Forecast</Button>
+			<div id="timeStamp"></div>
+		<center>
 	</div>
-	<div><img src="images/SnoopLogo.png" style="position: absolute; bottom: 25px; right: 25px; width: 8%"></div>
+	<div><img src="images/SnoopLogo.png" style="position: absolute; bottom: 20px; right: 20px; width: 8%"></div>
 </div>
-<script src="WeatherSnoop.js"></script>
+<script src="WeatherSnooper.js"></script>
 </body>
 </html>

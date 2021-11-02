@@ -20,7 +20,7 @@ body {
 	Width: auto;
 	height: auto;
 	cursor: pointer;
-	font-family: 'Acme', sans-serif;
+	font-size: 15px;
 }
 .mapboxgl-marker{
 	cursor: pointer;
@@ -95,3 +95,14 @@ body {
 	bottom: 20px;
 	right: 20px;
 }
+
+#noaa {
+	text-align: center;
+	margin: 40px;
+	color: #8d32a8;
+	font-family: 'Acme', sans-serif;
+}
+
+
+
+

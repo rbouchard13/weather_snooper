@@ -151,6 +151,10 @@ function forecastDay() {
 }
 
 function alertsPresent(marker, alerts){
+	for (let i = 0; i < alerts.features.length; i++) {
+		var activeAlerts = "<hr>" + alerts.features[i].properties.description;
+	}
+	activeAlerts = "<center><Strong>Active Alerts for Your Area</strong></center>" + activeAlerts;
       	let markerElement = marker.getElement();
       	markerElement
 		.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
@@ -159,7 +163,7 @@ function alertsPresent(marker, alerts){
 	var popup = new mapboxgl.Popup({
 		offset: 25,
 		id: popup})
-		.setHTML("Alerts: " + alerts.features[0].properties.description);
+		.setHTML(activeAlerts);
 	marker.setPopup(popup);
 }
 

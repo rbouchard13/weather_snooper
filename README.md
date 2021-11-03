@@ -8,7 +8,8 @@ Real time live weather data including weekly forecast utilizing api calls every 
 </ul>
 <h2>Soure API's</h2>
 <a href="https://www.mapbox.com/legal/tos/" target="_blank">MapBox</a><br>
-<a href="https://openweather.co.uk/storage/app/media/Terms/Openweather_terms_and_conditions_of_sale.pdf" target="_blank">OpenWeather One Call</a>
+<a href="https://openweather.co.uk/storage/app/media/Terms/Openweather_terms_and_conditions_of_sale.pdf" target="_blank">OpenWeather One Call</a><br>
+<a href="https://www.weather.gov/documentation/services-web-api" target="_blank">NWS API</a>
 <h2>License</h2>
 MIT License
 

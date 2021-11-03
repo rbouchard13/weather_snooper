@@ -2,6 +2,7 @@ var obsStations = [];
 var lat;
 var lng;
 var markers = [];
+var tog;
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 function loadMap() {
 	var element = document.getElementById('map');
@@ -51,12 +52,10 @@ async function getForecast(lat,lng) {
 }
 
 async function showPosition(lat,lng) {
+	clearInterval(tog);
 	var marker = new mapboxgl.Marker({
 		color: "#18fc03"
 	})
-
-.setLngLat([0, 0])
-.addTo(map);
 	marker.setLngLat([lng, lat]);
 	marker.addTo(map);
 	markers.push(marker);
@@ -67,7 +66,7 @@ async function showPosition(lat,lng) {
 	});
 	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
 	var alerts = await response.json(); console.log(alerts);
-	if (alerts.features.length > 0) {alertsPresent(marker, alerts)};
+	if (alerts.features.length > 0) {alertsPresent(marker, alerts);}
 }
 
 async function xmlParse(xml) {	
@@ -158,13 +157,29 @@ function alertsPresent(marker, alerts){
       	let markerElement = marker.getElement();
       	markerElement
 		.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
-		.setAttribute("fill", "#e31009");      
-      	marker._color = "#e31009";
+		.setAttribute("fill", "#ff1a1a");      
+      	marker._color = "#ff1a1a";
 	var popup = new mapboxgl.Popup({
 		offset: 25,
 		id: popup})
 		.setHTML(activeAlerts);
 	marker.setPopup(popup);
+	tog = setInterval(markerAlert, 500);
+}
+
+function markerAlert() {
+	let marker = markers[0];
+      	let markerElement = marker.getElement();
+	if (marker._color === "#ff1a1a") {
+      		markerElement
+			.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
+			.setAttribute("fill", "#990000");      
+      		marker._color = "#990000";
+	} else {
+      	markerElement
+		.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
+		.setAttribute("fill", "#ff1a1a");      
+      	marker._color = "#ff1a1a";}	
 }
 
 function distance(lat, lat2, lng, lng2) {

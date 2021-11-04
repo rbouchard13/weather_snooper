@@ -107,8 +107,8 @@ async function xmlParse(xml) {
 }
 
 function addWeather(current) {
-	document.getElementById("currIcon").innerHTML = "<center><img src='" + current.properties.icon + "' style='width: 30%; border-radius: 15%;'></center>";
-	document.getElementById("currDetail").innerHTML = "<center>" + current.properties.textDescription + "</center>"; 
+	document.getElementById("currIcon").innerHTML = "<center><img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;'></center>";
+	document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";
@@ -223,4 +223,4 @@ function newLoc(event) {
 
 window.onload = loadMap();
 map.on('click', newLoc);
-setInterval(loadXMLDoc, 300000);
+setInterval(loadXMLDoc, 60000);

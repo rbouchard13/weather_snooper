@@ -107,7 +107,7 @@ async function xmlParse(xml) {
 }
 
 function addWeather(current) {
-	document.getElementById("currIcon").innerHTML = "<center><img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;'></center>";
+	document.getElementById("currIcon").innerHTML = "<center><img src='" + current.properties.icon + "' style='width: 85%; border-radius: 15%;'></center>";
 	document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";

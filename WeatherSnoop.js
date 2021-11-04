@@ -223,4 +223,4 @@ function newLoc(event) {
 
 window.onload = loadMap();
 map.on('click', newLoc);
-setInterval(loadXMLDoc, 60000);
+setInterval(loadXMLDoc, 300000);

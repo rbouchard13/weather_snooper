@@ -2,7 +2,21 @@ var obsStations = [];
 var lat;
 var lng;
 var markers = [];
-var tog;
+var grid;
+
+
+var velocity = 1;
+var position = -300;
+var alertdiv = document.getElementById('alertdiv');
+
+function alertScroll(){
+    var w = window.innerWidth; var we = w + 25;
+	position = position + velocity; alertdiv.style.right = position + 'px';
+	if(position > we){alertdiv.style.right = '-2500px'; position = -2500;}
+}
+
+var scroll = setInterval(alertScroll, 15);
+
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 function loadMap() {
 	var element = document.getElementById('map');
@@ -52,7 +66,8 @@ async function getForecast(lat,lng) {
 }
 
 async function showPosition(lat,lng) {
-	clearInterval(tog);
+	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
+	alerts = await response.json(); console.log(alerts);
 	var marker = new mapboxgl.Marker({
 		color: "#18fc03"
 	})
@@ -64,9 +79,10 @@ async function showPosition(lat,lng) {
 		zoom: 13,
 		essential: true
 	});
-	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
-	var alerts = await response.json(); console.log(alerts);
-	if (alerts.features.length > 0) {alertsPresent(marker, alerts);}
+
+	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
+	} else {document.getElementById("alertcontainer").style.display = "none";
+	}	
 }
 
 async function xmlParse(xml) {	
@@ -151,36 +167,18 @@ function forecastDay() {
 
 function alertsPresent(marker, alerts){
 	for (let i = 0; i < alerts.features.length; i++) {
-		var activeAlerts = "<hr>" + alerts.features[i].properties.description;
+		var activeAlerts = alerts.features[i].properties.description;
 	}
-	activeAlerts = "<center><Strong>Active Alerts for Your Area</strong></center>" + activeAlerts;
       	let markerElement = marker.getElement();
       	markerElement
 		.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
 		.setAttribute("fill", "#ff1a1a");      
       	marker._color = "#ff1a1a";
-	var popup = new mapboxgl.Popup({
-		offset: 25,
-		id: popup})
-		.setHTML(activeAlerts);
-	marker.setPopup(popup);
-	tog = setInterval(markerAlert, 500);
+	var newA = activeAlerts.replace(/\n/g, " ");
+	document.getElementById("alertcontainer").style.display = "block";
+	document.getElementById("alertdiv").innerText = newA;
 }
 
-function markerAlert() {
-	let marker = markers[0];
-      	let markerElement = marker.getElement();
-	if (marker._color === "#ff1a1a") {
-      		markerElement
-			.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
-			.setAttribute("fill", "#990000");      
-      		marker._color = "#990000";
-	} else {
-      	markerElement
-		.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
-		.setAttribute("fill", "#ff1a1a");      
-      	marker._color = "#ff1a1a";}	
-}
 
 function distance(lat, lat2, lng, lng2) {
 	lng = lng * Math.PI / 180;
@@ -206,5 +204,23 @@ function closeNav() {
   	document.getElementById("mySidenav").style.width = "0";
 }
 
+function newLoc(event) {
+		let loc = JSON.parse(JSON.stringify(event.lngLat));
+		let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
+		let xlng = loc.lng - lng; xlng = xlng.toFixed(4);
+		var msg = confirm("You are about to move to a new location. Are you sure you want to?")
+		if (msg == true) {
+		lat = loc.lat;
+		lng = loc.lng;
+		markers.forEach((item) => {item.remove();});
+		markers = [];
+		obsStations = [];
+		loadXMLDoc();
+	} else {
+		return;
+	}
+}
+
 window.onload = loadMap();
-setInterval(loadXMLDoc, 300000);
+map.on('click', newLoc);
+setInterval(loadXMLDoc, 60000);

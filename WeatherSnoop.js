@@ -203,7 +203,7 @@ function distance(lat, lat2, lng, lng2) {
 }
 
 function openNav() {
-	let curWidth = document.getElementById("curdetails").offsetWidth;
+	let curWidth = document.getElementById("curdetails").offsetWidth + 10;
   	document.getElementById("mySidenav").style.width = curWidth + "px";
 }
 

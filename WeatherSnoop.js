@@ -18,6 +18,30 @@ function alertScroll(){
 var scroll = setInterval(alertScroll, 15);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
+
+const geocoder = new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+types: 'country,region,place,postcode,locality,neighborhood'
+});
+geocoder.addTo('#geocoder');
+ 
+geocoder.on('result', (e) => {let geo = e.result;
+	lng = geo.geometry.coordinates[0];
+	lat = geo.geometry.coordinates[1];
+	markers.forEach((item) => {item.remove();});
+	markers = [];
+	obsStations = [];
+	loadXMLDoc();
+});
+
+geocoder.on('clear', () => {
+	getLocation();
+	markers.forEach((item) => {item.remove();});
+	markers = [];
+	obsStations = []; 
+});
+
+
 function loadMap() {
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
@@ -107,7 +131,7 @@ async function xmlParse(xml) {
 }
 
 function addWeather(current) {
-	document.getElementById("currIcon").innerHTML = "<center><img src='" + current.properties.icon + "' style='width: 75%; border-radius: 15%;'></center>";
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;'>";
 	document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
@@ -137,23 +161,6 @@ function loadForecast(forecast) {
 	return str; 
 }
 
-async function zipSearch() {
-	let zipCd = document.getElementById("zipsearch").value;
-	if (zipCd === "") {getLocation();
-		markers.forEach((item) => {item.remove();});
-		markers = [];
-		obsStations = []; 		
-		return;
-	}
-	url = 'https://api.openweathermap.org/data/2.5/weather?zip=' + zipCd + '&appid=e40d95c703aed46604f8e84a0b8291c6';
-	var response = await fetch(url);
-	var data = await response.json();
-	lat = data.coord.lat; lng = data.coord.lon;
-	markers.forEach((item) => {item.remove();});
-	markers = [];
-	obsStations = [];
-	loadXMLDoc();
-}
 
 function forecastDay() {
 	var d= new Date();
@@ -223,4 +230,4 @@ function newLoc(event) {
 
 window.onload = loadMap();
 map.on('click', newLoc);
-setInterval(loadXMLDoc, 60000);
+setInterval(loadXMLDoc, 300000);

@@ -76,15 +76,12 @@ async function getRadar() {
                   		tileSize: 256
                 	},
                 	layout: { visibility: "none" },
-                	minzoom: 0,
-                	maxzoom: 5
-              });
+                	minzoom: 0
+              	});
 	});
             var i = 0;
             const interval = setInterval(() => {
-              	if (i > getRad.radar.past.length - 1) {
-			i = 0;
-              	} 
+              	if (i > getRad.radar.past.length - 1) {i = 0;} 
 		getRad.radar.past.forEach((frame, index) => {
                   	map.setLayoutProperty(
                     		`rainviewer_${frame.path}`,

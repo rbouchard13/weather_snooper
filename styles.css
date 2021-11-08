@@ -58,18 +58,29 @@ body {
   	right: 25px;
   	font-size: 36px;
   	margin-left: 50px;
-	color: #66ffff;
+	color: #8d32a8;
 	cursor: pointer;
 }
 
+#menuBtn {
+	font-size: 20px; 
+	cursor:pointer;  
+	color: #8d32a8;
+	text-align: center;
+}
+
+#menuItems {
+	text-align: center;
+}
+
 #curdetails {
-	border: ridge; 
-	margin-top: 10px; 
+	border-radius: 10%;
+	margin-top: 25px; 
 	margin-left: 10px; 
 	padding: 20px; 
 	width: auto; 
 	height: auto; 
-	background-color: #1f2e2e; 
+	background-color: rgba(179,179,179,.8);
 	position: absolute; 
 	top: 0; 
 	left: 0; 
@@ -80,10 +91,9 @@ body {
 .button1 {
 	font-family: 'Acme', sans-serif;
 	border-radius: 12px;
-	background-color: #66ffff;
-	padding: 5px;
+	background-color: #18fc03;
+	padding: 3px;
 }
-
 
 #svnDay {
 	color: #8d32a8;

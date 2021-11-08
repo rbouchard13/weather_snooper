@@ -3,27 +3,15 @@ var lat;
 var lng;
 var markers = [];
 var grid;
-
-
-var velocity = 1;
-var position = -300;
-var alertdiv = document.getElementById('alertdiv');
-
-function alertScroll(){
-    var w = window.innerWidth; var we = w + 25;
-	position = position + velocity; alertdiv.style.right = position + 'px';
-	if(position > we){alertdiv.style.right = '-2500px'; position = -2500;}
-}
-
-var scroll = setInterval(alertScroll, 15);
+var activeAlerts;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 
 const geocoder = new MapboxGeocoder({
-accessToken: mapboxgl.accessToken,
-types: 'country,region,place,postcode,locality,neighborhood'
-});
-geocoder.addTo('#geocoder');
+	accessToken: mapboxgl.accessToken,
+	types: 'country,region,place,postcode,locality,neighborhood'
+	});
+	geocoder.addTo('#geocoder');
  
 geocoder.on('result', (e) => {let geo = e.result;
 	lng = geo.geometry.coordinates[0];
@@ -47,6 +35,7 @@ function loadMap() {
 	map = new mapboxgl.Map({
   		container: 'map',
   		style: 'mapbox://styles/mapbox/satellite-v9',
+		//style: 'mapbox://styles/mapbox/dark-v10',
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
@@ -66,6 +55,64 @@ function getUserPosition(position) {
 	loadXMLDoc();
 }
 
+async function getRadar() {
+ 	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+	var getRad = await response.json();
+	console.log(getRad)
+        getRad.radar.past.forEach(frame => {
+		if (map.getLayer(`rainviewer_${frame.path}`)) {
+  			map.removeLayer(`rainviewer_${frame.path}`);
+		}
+		if (map.getSource(`rainviewer_${frame.path}`)) {
+  			map.removeSource(`rainviewer_${frame.path}`);
+		}
+              	map.addLayer({
+                	id: `rainviewer_${frame.path}`,
+                	type: "raster",
+                	source: {
+                  		type: "raster",
+                  		tiles: [
+                    			getRad.host + frame.path + '/256/{z}/{x}/{y}/6/1_1.png'
+                  		],
+                  		tileSize: 256
+                	},
+                	layout: { visibility: "none" },
+                	minzoom: 0,
+                	maxzoom: 7
+              });
+	});
+
+            let i = 0;
+            const interval = setInterval(() => {
+              if (i > getRad.radar.past.length - 1) {
+			return;
+              } else {getRad.radar.past.forEach((frame, index) => {
+                  	map.setLayoutProperty(
+                    		`rainviewer_${frame.path}`,
+                    		"visibility",
+                    		index === i || index === i - 1 ? "visible" : "none"
+                  	);
+              });
+                if (i - 1 >= 0) {
+                  const frame = getRad.radar.past[i - 1];
+                  let opacity = 1;
+                  setTimeout(() => {
+                    const i2 = setInterval(() => {
+                      	if (opacity <= 0) {return clearInterval(i2);}
+                      	map.setPaintProperty(
+                        	`rainviewer_${frame.path}`,
+                        	"raster-opacity",
+                        	opacity
+                      	);
+                      	opacity -= 0.1;
+                    }, 50);
+                  }, 400);
+                }
+                i += 1;
+              }
+            }, 2000);
+}
+
 async function loadXMLDoc() {
   	var xhttp = new XMLHttpRequest();
   	xhttp.onreadystatechange = function() {
@@ -77,6 +124,7 @@ async function loadXMLDoc() {
   	xhttp.send();
 	getForecast(lat,lng);
 	showPosition(lat,lng);
+	getRadar();
 }
 
 async function getForecast(lat,lng) {
@@ -131,8 +179,8 @@ async function xmlParse(xml) {
 }
 
 function addWeather(current) {
-	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;'>";
-	document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;' title='" + current.properties.textDescription + "'>";
+	//document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";
@@ -174,7 +222,7 @@ function forecastDay() {
 
 function alertsPresent(marker, alerts){
 	for (let i = 0; i < alerts.features.length; i++) {
-		var activeAlerts = alerts.features[i].properties.description;
+		activeAlerts = alerts.features[i].properties.description;
 	}
       	let markerElement = marker.getElement();
       	markerElement
@@ -183,7 +231,7 @@ function alertsPresent(marker, alerts){
       	marker._color = "#ff1a1a";
 	var newA = activeAlerts.replace(/\n/g, " ");
 	document.getElementById("alertcontainer").style.display = "block";
-	document.getElementById("alertdiv").innerText = newA;
+	document.getElementById("alertdiv").innerHTML = "<marquee behavior='scroll' direction='left' style='color: white; font-family: 'Times New Roman', Times, serif;'>" + newA + "</marquee>"
 }
 
 
@@ -202,13 +250,34 @@ function distance(lat, lat2, lng, lng2) {
 	return(c * r);
 }
 
+function changeMode() {
+	if (document.getElementById("mode").innerText === "Dark Mode" ){
+		map.setStyle('mapbox://styles/mapbox/dark-v10');
+		getRadar();
+		document.getElementById("mode").innerText = "Satellite Mode";}
+	else {
+		map.setStyle('mapbox://styles/mapbox/satellite-v9');
+		getRadar();
+		document.getElementById("mode").innerText = "Dark Mode";}
+}
+
 function openNav() {
 	let curWidth = document.getElementById("curdetails").offsetWidth +10;
   	document.getElementById("mySidenav").style.width = curWidth + "px";
+	document.getElementById("menu").style.width = "0";
 }
 
 function closeNav() {
   	document.getElementById("mySidenav").style.width = "0";
+}
+
+function openMenu() {
+	let curWidth = document.getElementById("curdetails").offsetWidth +10;
+  	document.getElementById("menu").style.width = curWidth + "px";
+}
+
+function closeMenu() {
+  	document.getElementById("menu").style.width = "0";
 }
 
 function newLoc(event) {
@@ -229,5 +298,5 @@ function newLoc(event) {
 }
 
 window.onload = loadMap();
-map.on('click', newLoc);
+map.on('click', newLoc); 
 setInterval(loadXMLDoc, 300000);

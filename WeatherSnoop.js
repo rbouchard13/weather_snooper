@@ -80,7 +80,6 @@ async function getRadar() {
                 	maxzoom: 5
               });
 	});
-
             var i = 0;
             const interval = setInterval(() => {
               	if (i > getRad.radar.past.length - 1) {
@@ -93,24 +92,8 @@ async function getRadar() {
                     		index === i || index === i - 1 ? "visible" : "none"
                   	);
               	});
-                	if (i - 1 >= 0) {
-                  	const frame = getRad.radar.past[i - 1];
-                  	let opacity = 1;
-                  		setTimeout(() => {
-                    			const i2 = setInterval(() => {
-                      				if (opacity <= 0) {return clearInterval(i2);}
-                      					map.setPaintProperty(
-                        				`rainviewer_${frame.path}`,
-                        				"raster-opacity",
-                        				opacity
-                      					);
-                      				opacity -= 0.0;
-                    			}, 50);
-                  		}, 400);
-                	}
                 i += 1;
-
-            }, 1000);
+            }, 500);
 }
 
 async function loadXMLDoc() {

@@ -81,35 +81,36 @@ async function getRadar() {
               });
 	});
 
-            let i = 0;
+            var i = 0;
             const interval = setInterval(() => {
-              if (i > getRad.radar.past.length - 1) {
-			return;
-              } else {getRad.radar.past.forEach((frame, index) => {
+              	if (i > getRad.radar.past.length - 1) {
+			i = 0;
+              	} 
+		getRad.radar.past.forEach((frame, index) => {
                   	map.setLayoutProperty(
                     		`rainviewer_${frame.path}`,
                     		"visibility",
                     		index === i || index === i - 1 ? "visible" : "none"
                   	);
-              });
-                if (i - 1 >= 0) {
-                  const frame = getRad.radar.past[i - 1];
-                  let opacity = 1;
-                  setTimeout(() => {
-                    const i2 = setInterval(() => {
-                      	if (opacity <= 0) {return clearInterval(i2);}
-                      	map.setPaintProperty(
-                        	`rainviewer_${frame.path}`,
-                        	"raster-opacity",
-                        	opacity
-                      	);
-                      	opacity -= 0.1;
-                    }, 50);
-                  }, 400);
-                }
+              	});
+                	if (i - 1 >= 0) {
+                  	const frame = getRad.radar.past[i - 1];
+                  	let opacity = 1;
+                  		setTimeout(() => {
+                    			const i2 = setInterval(() => {
+                      				if (opacity <= 0) {return clearInterval(i2);}
+                      					map.setPaintProperty(
+                        				`rainviewer_${frame.path}`,
+                        				"raster-opacity",
+                        				opacity
+                      					);
+                      				opacity -= 0.0;
+                    			}, 50);
+                  		}, 400);
+                	}
                 i += 1;
-              }
-            }, 2000);
+
+            }, 1000);
 }
 
 async function loadXMLDoc() {

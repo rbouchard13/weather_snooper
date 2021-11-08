@@ -35,7 +35,6 @@ function loadMap() {
 	map = new mapboxgl.Map({
   		container: 'map',
   		style: 'mapbox://styles/mapbox/satellite-v9',
-		//style: 'mapbox://styles/mapbox/dark-v10',
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
@@ -180,7 +179,6 @@ async function xmlParse(xml) {
 
 function addWeather(current) {
 	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;' title='" + current.properties.textDescription + "'>";
-	//document.getElementById("currDetail").innerHTML = " " + current.properties.textDescription; 
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";

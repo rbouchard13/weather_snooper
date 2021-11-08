@@ -77,7 +77,7 @@ async function getRadar() {
                 	},
                 	layout: { visibility: "none" },
                 	minzoom: 0,
-                	maxzoom: 7
+                	maxzoom: 5
               });
 	});
 

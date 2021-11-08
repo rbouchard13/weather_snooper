@@ -90,7 +90,7 @@ async function getRadar() {
                   	);
               	});
                 i += 1;
-            }, 500);
+            }, 1000);
 }
 
 async function loadXMLDoc() {

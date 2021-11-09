@@ -88,6 +88,11 @@ async function getRadar() {
                     		"visibility",
                     		index === i || index === i - 1 ? "visible" : "none"
                   	);
+			map.setPaintProperty(
+				`rainviewer_${frame.path}`,
+				'raster-opacity',
+				0.5
+			);
               	});
                 i += 1;
             }, 1000);
@@ -128,7 +133,7 @@ async function showPosition(lat,lng) {
 	markers.push(marker);
 	map.flyTo({
 		center: [lng, lat],
-		zoom: 13,
+		zoom: 8,
 		essential: true
 	});
 

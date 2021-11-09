@@ -86,7 +86,7 @@ async function getRadar() {
                   	map.setLayoutProperty(
                     		`rainviewer_${frame.path}`,
                     		"visibility",
-                    		index === i || index === i - 1 ? "visible" : "none"
+                    		index === !i  || index === i  ? "none" : "visible"
                   	);
 			map.setPaintProperty(
 				`rainviewer_${frame.path}`,

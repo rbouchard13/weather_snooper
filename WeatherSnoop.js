@@ -4,6 +4,7 @@ var lng;
 var markers = [];
 var grid;
 var activeAlerts;
+var getRad;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 
@@ -35,6 +36,7 @@ function loadMap() {
 	map = new mapboxgl.Map({
   		container: 'map',
   		style: 'mapbox://styles/mapbox/satellite-v9',
+		//style: 'mapbox://styles/mapbox/dark-v10',
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
@@ -56,45 +58,33 @@ function getUserPosition(position) {
 
 async function getRadar() {
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
-	var getRad = await response.json();
+	getRad = await response.json();
 	console.log(getRad)
-        getRad.radar.past.forEach(frame => {
-		if (map.getLayer(`rainviewer_${frame.path}`)) {
-  			map.removeLayer(`rainviewer_${frame.path}`);
-		}
-		if (map.getSource(`rainviewer_${frame.path}`)) {
-  			map.removeSource(`rainviewer_${frame.path}`);
-		}
+		if (map.getLayer(`radar`)) {map.removeLayer(`radar`);}
+		if (map.getSource(`radar`)) {map.removeSource(`radar`);}
               	map.addLayer({
-                	id: `rainviewer_${frame.path}`,
+                	id: `radar`,
                 	type: "raster",
+			paint: {"raster-opacity" : 0.5},
                 	source: {
                   		type: "raster",
                   		tiles: [
-                    			getRad.host + frame.path + '/256/{z}/{x}/{y}/6/1_1.png'
+                    			getRad.host + getRad.radar.past[0].path + '/512/{z}/{x}/{y}/6/1_1.png'
                   		],
-                  		tileSize: 256
+                  		tileSize: 512
                 	},
-                	layout: { visibility: "none" },
+                	layout: {visibility: "visible"},
                 	minzoom: 0
-              	});
-	});
+              });
             var i = 0;
             const interval = setInterval(() => {
-              	if (i > getRad.radar.past.length - 1) {i = 0;} 
-		getRad.radar.past.forEach((frame, index) => {
-                  	map.setLayoutProperty(
-                    		`rainviewer_${frame.path}`,
-                    		"visibility",
-                    		index === i || index === !i   ? "visible" : "none"
-                  	);
-			map.setPaintProperty(
-				`rainviewer_${frame.path}`,
-				'raster-opacity',
-				0.5
-			);
-              	});
-                i += 1;
+			document.getElementById("footer").innerHTML = (new Date(getRad.radar.past[i].time * 1000)).toString();	
+			map.getSource('radar').tiles = [ getRad.host + getRad.radar.past[i].path + '/512/{z}/{x}/{y}/6/1_1.png']
+			map.style.sourceCaches['radar'].clearTiles()
+			map.style.sourceCaches['radar'].update(map.transform)
+			map.triggerRepaint()
+			i++; 
+			if (i === getRad.radar.past.length) {i = 0};
             }, 1000);
 }
 
@@ -118,6 +108,11 @@ async function getForecast(lat,lng) {
 	forecastUrl = grid.properties.forecast;
 	var response = await fetch(forecastUrl);
 	var forecast = await response.json(); console.log(forecast);
+	if (response.status === 500) {
+		document.getElementById("svnDay").innerHTML = "There was an error with the forecast data." +
+		" This page automatically updates every five minutes. If you would like your forecast sooner, please refresh your browser session."; 
+		return;
+	}
 	let strForecast = loadForecast(forecast);
 	document.getElementById("svnDay").innerHTML = strForecast;
 }
@@ -175,7 +170,6 @@ function addWeather(current) {
 	let pressure = (current.properties.barometricPressure.value / 100) * .0295301;
 	pressure = pressure.toFixed(2);
 	document.getElementById("currPressure").innerHTML = " " + pressure + "in";
-	forecastDay();
 }
 
 function loadForecast(forecast) {
@@ -191,17 +185,6 @@ function loadForecast(forecast) {
 				"<div class='col'>" + forecast.properties.periods[i].detailedForecast + "</div></div>";}
 	};
 	return str; 
-}
-
-
-function forecastDay() {
-	var d= new Date();
-	d.setDate(d.getDate());
-	let text = d.toString();
-	var dtArr = text.split(" ");
-	let fDay = dtArr[0] + " " + dtArr[1] + " " + dtArr[2] + " " + dtArr[3];
-	//document.getElementById("timeStamp").innerHTML = "Time: " + dtArr[4] + "";
-	return fDay; 
 }
 
 function alertsPresent(marker, alerts){

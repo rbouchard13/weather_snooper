@@ -59,33 +59,38 @@ function getUserPosition(position) {
 async function getRadar() {
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
+	if (map.getLayer(`radar1`)) {map.removeLayer(`radar1`); map.removeSource(`radar1`);} 
+	if (map.getLayer(`radar-1`)) {map.removeLayer(`radar-1`); map.removeSource(`radar-1`);} 
 	console.log(getRad)
-		if (map.getLayer(`radar`)) {map.removeLayer(`radar`);}
-		if (map.getSource(`radar`)) {map.removeSource(`radar`);}
-              	map.addLayer({
-                	id: `radar`,
-                	type: "raster",
-			paint: {"raster-opacity" : 0.5},
-                	source: {
-                  		type: "raster",
-                  		tiles: [
-                    			getRad.host + getRad.radar.past[0].path + '/512/{z}/{x}/{y}/6/1_1.png'
-                  		],
-                  		tileSize: 512
-                	},
-                	layout: {visibility: "visible"},
-                	minzoom: 0
-              });
-            var i = 0;
-            const interval = setInterval(() => {
+            	var i = 0;
+		var f = 1;
+            	const interval = setInterval(() => {
+			let fr = f * - 1;
+			if (map.getLayer(`radar` + fr)){
+				setTimeout(()=> {
+					map.removeLayer(`radar` + fr);
+					map.removeSource(`radar` + fr);
+				}, 250);
+			}
 			document.getElementById("footer").innerHTML = (new Date(getRad.radar.past[i].time * 1000)).toString();	
-			map.getSource('radar').tiles = [ getRad.host + getRad.radar.past[i].path + '/512/{z}/{x}/{y}/6/1_1.png']
-			map.style.sourceCaches['radar'].clearTiles()
-			map.style.sourceCaches['radar'].update(map.transform)
-			map.triggerRepaint()
+              		map.addLayer({
+                		id: `radar` + f,
+                		type: "raster",
+				paint: {"raster-opacity" : 0.5},
+                		source: {
+                  			type: "raster",
+                  			tiles: [
+                    				getRad.host + getRad.radar.past[i].path + '/512/{z}/{x}/{y}/6/1_1.png'
+                  			],
+                  			tileSize: 512
+                		},
+                		layout: {visibility: "visible"},
+                		minzoom: 0
+              		});
 			i++; 
+			f = f * - 1;
 			if (i === getRad.radar.past.length) {i = 0};
-            }, 1000);
+            	}, 1500);
 }
 
 async function loadXMLDoc() {

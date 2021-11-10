@@ -116,6 +116,16 @@ body {
 	display: none;
 }
 
+.footer {
+   	position: fixed;
+   	left: 0;
+   	bottom: 0;
+   	width: 100%;
+	color: white;
+	font-family: 'Acme', sans-serif;
+   	text-align: center;
+}
+
 .snoopLogo {
 	position: absolute;
 	bottom: 20px;

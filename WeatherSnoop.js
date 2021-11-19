@@ -90,7 +90,7 @@ async function getRadar() {
 			i++; 
 			f = f * - 1;
 			if (i === getRad.radar.past.length) {i = 0};
-            	}, 1500);
+            	}, 750);
 }
 
 async function loadXMLDoc() {

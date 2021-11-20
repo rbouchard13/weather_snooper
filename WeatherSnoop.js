@@ -89,7 +89,7 @@ async function getRadar() {
 			if (nTime[0] > 12) {
 				nTime[0] = nTime[0] - 12;}
 			let disTime = nTime[0] + ":" + nTime[1];
-			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime
+			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime + tmPer;
 			document.getElementById("footer").innerHTML = footDate;
               		map.addLayer({
                 		id: `radar` + f,

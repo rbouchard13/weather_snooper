@@ -4,7 +4,6 @@ var lng;
 var markers = [];
 var grid;
 var activeAlerts;
-var current
 var getRad;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
@@ -37,7 +36,7 @@ function loadMap() {
 	map = new mapboxgl.Map({
   		container: 'map',
   		style: 'mapbox://styles/mapbox/satellite-v9',
-		//style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
+		//style: 'mapbox://styles/mapbox/dark-v10',
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
@@ -55,15 +54,6 @@ function getUserPosition(position) {
 	lat = position.coords.latitude;
 	lng = position.coords.longitude;
 	loadXMLDoc();
-}
-
-function clearMap() {
-	 map.getStyle().layers.forEach((layer) => {
-    		if (layer.id === "radar1" || layer.id === "radar-1") {
-        		map.removeLayer(layer.id)
-        		map.removeSource(layer.id);
-    		}
-	});
 }
 
 async function getRadar() {
@@ -88,8 +78,8 @@ async function getRadar() {
 			if (nTime[0] > 12) {
 				nTime[0] = nTime[0] - 12;}
 			let disTime = nTime[0] + ":" + nTime[1];
-			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime;
-			document.getElementById("footer").innerHTML = footDate; //(new Date(getRad.radar.past[i].time * 1000)).toString();	
+			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime
+			document.getElementById("footer").innerHTML = footDate;
               		map.addLayer({
                 		id: `radar` + f,
                 		type: "raster",
@@ -108,11 +98,6 @@ async function getRadar() {
 			f = f * - 1;
 			if (i === getRad.radar.past.length) {i = 0};
             	}, 750);
-}
-
-function reset() {
-	clearInterval(interval);
-	loadXMLDoc();
 }
 
 async function loadXMLDoc() {
@@ -180,7 +165,7 @@ async function xmlParse(xml) {
 	})
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
-	current = await response.json(); console.log(current);
+	var current = await response.json(); console.log(current);
 	addWeather(current);
 	document.getElementById("station").innerHTML = obsStations[0].name;	
 }
@@ -205,7 +190,7 @@ function addWeather(current) {
 		let realfeel = Math.round((current.properties.windChill.value * 9/5) + 32);
 		document.getElementById("feels").innerHTML = "Feels Like:<span style='margin-left: 5px;'>" + realfeel + "&#8457</span>"; 
 		return;}
-	else {	
+	else {
 		document.getElementById("feels").innerHTML = ""}
 }
 
@@ -303,4 +288,4 @@ function newLoc(event) {
 
 window.onload = loadMap();
 map.on('click', newLoc); 
-setInterval(reset, 300000);
+setInterval(loadXMLDoc, 300000);

@@ -84,6 +84,8 @@ async function getRadar() {
 			});
 			let nDate = new Date(getRad.radar.past[i].time * 1000).toString().split(" ");
 			let nTime = nDate[4].split(":");
+			let tmPer = "am";
+			if (nTime[0] > 11 ) {tmPer = "pm";};
 			if (nTime[0] > 12) {
 				nTime[0] = nTime[0] - 12;}
 			let disTime = nTime[0] + ":" + nTime[1];

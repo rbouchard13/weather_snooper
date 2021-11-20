@@ -56,6 +56,15 @@ function getUserPosition(position) {
 	loadXMLDoc();
 }
 
+function clearMap() {
+	 map.getStyle().layers.forEach((layer) => {
+    		if (layer.id === "radar1" || layer.id === "radar-1") {
+        		map.removeLayer(layer.id)
+        		map.removeSource(layer.id);
+    		}
+	});
+}
+
 async function getRadar() {
 	clearMap();
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')

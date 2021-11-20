@@ -84,13 +84,11 @@ async function getRadar() {
     				}
 			});
 			let nDate = new Date(getRad.radar.past[i].time * 1000).toString().split(" ");
-			var timePer = "am";
 			let nTime = nDate[4].split(":");
 			if (nTime[0] > 12) {
-				timePer = "pm";
 				nTime[0] = nTime[0] - 12;}
 			let disTime = nTime[0] + ":" + nTime[1];
-			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime + timePer;
+			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime;
 			document.getElementById("footer").innerHTML = footDate; //(new Date(getRad.radar.past[i].time * 1000)).toString();	
               		map.addLayer({
                 		id: `radar` + f,

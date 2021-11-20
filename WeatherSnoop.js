@@ -57,7 +57,7 @@ function getUserPosition(position) {
 }
 
 async function getRadar() {
-	clearMap()
+	clearMap();
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
 	console.log(getRad)

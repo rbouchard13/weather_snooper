@@ -36,7 +36,6 @@ function loadMap() {
 	map = new mapboxgl.Map({
   		container: 'map',
   		style: 'mapbox://styles/mapbox/satellite-v9',
-		//style: 'mapbox://styles/mapbox/dark-v10',
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
@@ -56,17 +55,7 @@ function getUserPosition(position) {
 	loadXMLDoc();
 }
 
-function clearMap() {
-	 map.getStyle().layers.forEach((layer) => {
-    		if (layer.id === "radar1" || layer.id === "radar-1") {
-        		map.removeLayer(layer.id)
-        		map.removeSource(layer.id);
-    		}
-	});
-}
-
 async function getRadar() {
-	clearMap();
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
 	console.log(getRad)

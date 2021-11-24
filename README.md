@@ -2,9 +2,10 @@
 Real time live weather data including weekly forecast utilizing api calls every 5 minutes to update data in both current conditions as well as forecast conditions
 <h2>Future Improvements</h2>
 <ul>
-  <li>Add radar base and velocity image overlays</li>
-  <li>Add horizontal scrolling for currrent alerts</li>
-  <li>Add drag and drop location lookup of marker</li>
+  <li>user control radar loop speed</li>
+  <li>velocity radar</li>
+  <li>alert pushes</li>
+  <li>user uploads in community section</li>
 </ul>
 <h2>Soure API's</h2>
 <a href="https://www.mapbox.com/legal/tos/" target="_blank">MapBox</a><br>

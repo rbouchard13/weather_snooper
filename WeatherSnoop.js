@@ -286,6 +286,23 @@ function newLoc(event) {
 	}
 }
 
+function showAbout() {
+	let modal = document.getElementById("aboutMod");
+	modal.style.display = "block";
+	document.getElementById("menu").style.width = "0";
+}
+
+function closeAbout() {
+	let modal = document.getElementById("aboutMod");
+  	modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  	if (event.target == modal) {
+    		modal.style.display = "none";
+  	}
+}
+
 window.onload = loadMap();
 map.on('click', newLoc); 
 setInterval(loadXMLDoc, 300000);

@@ -11,6 +11,7 @@ Real time live weather data including weekly forecast utilizing api calls every 
 <a href="https://www.mapbox.com/legal/tos/" target="_blank">MapBox</a><br>
 <a href="https://openweather.co.uk/storage/app/media/Terms/Openweather_terms_and_conditions_of_sale.pdf" target="_blank">OpenWeather One Call</a><br>
 <a href="https://www.weather.gov/documentation/services-web-api" target="_blank">NWS API</a>
+<a href="https://www.rainviewer.com/api.html" target="_blank">Rain Viewer</a>
 <h2>License</h2>
 MIT License
 

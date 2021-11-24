@@ -298,6 +298,7 @@ function closeAbout() {
 }
 
 window.onclick = function(event) {
+	let modal = document.getElementById("aboutMod");
   	if (event.target == modal) {
     		modal.style.display = "none";
   	}

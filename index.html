@@ -38,6 +38,7 @@
 		<div id="menuItems">
 			<div><button class="button1" onClick="openNav()" style="margin-top: 5px;">Weekly Forecast</Button></div>
 			<div><button id="mode" class="button1" onClick="changeMode()" style="margin-top: 5px;">Dark Mode</Button></div>
+			<div><button id="about" class="button1" onClick="showAbout()" style="margin-top: 5px;">About</Button></div>
 		</div>
 	</div>
 	<div id="mySidenav" class="sidenav">
@@ -70,6 +71,21 @@
 	</div>
 	<div id="alertcontainer" style="background-color: red; height: 25px; width: 100%; position: absolute; display: none; top: 0;">
 		<div id="alertdiv" behavior="scroll" direction="left"></div>
+	</div>
+	<div id="aboutMod" class="modal">
+		<div class="modal-content">
+		<div class="close" onClick="closeAbout()">&times;</div>
+			<div style="margin-top: 20px; text-align: center;">
+    			<p>Welcome and thank you for visiting! Why does weathersnooper.com exist? Well, decades ago I fell in love with programming. At the time, not everyone understood why.
+			Many mornings when I was just going to bed, I would hear <q>You cant be staying up all night playing on that computer!</q> As time went by, people started to understand.</p>
+			<p>My Dad used to call all the time because someting wasnt working corerctly on his computer. He loved to get up every morning and check the weather. And over the years had seen so many different programs
+			but they all were growing to be more and more complicated each day! In 2020, I decided I was going to make him a new application JUST FOR HIM and sneak it onto his computer one night. Life got busy and I never got to do it.....</P>
+			<p>So now the rest of the world can use what he was never able to! Papa Bear.....This ones for you! We put each other through hell but I think that made us both better in the end......</p>
+			<p>I love weather and I love programming. It was a logical move for this site to be created. As it is a passion, I want something that is easy to use for all and built for the users!
+			feel free to click on the logo (created by the worlds best designer, Belleboo) in the bottom left corner to send feedback and suggestions!</p>
+			<img src="images/papabear.jpg" width="300px;"/>
+			</div>
+  		</div>
 	</div>
 	<div class="footer" id="footer"></div>
 	<div><a href="mailto:snoopprophet@gmail.com"><img src="images/SnoopLogo.png" style="position: absolute; bottom: 20px; right: 20px; width: 8%" title="Email Snoop!"></a></div>

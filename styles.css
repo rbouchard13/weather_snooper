@@ -180,3 +180,10 @@ body {
   	text-decoration: none;
   	cursor: pointer;
 }
+
+@media screen and (max-width: 800px) {
+  #curdetails {
+    	width: 90%;
+	margin-left: 5%;
+  }
+}

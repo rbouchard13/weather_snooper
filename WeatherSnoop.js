@@ -198,13 +198,13 @@ function loadForecast(forecast) {
 	let str = "";
 	for (i = 0; i <= 13; i++) {
 		if(str === '') {
-			str = "<div class='row' style='margin: 10px;'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><div class='col'><img src='" + forecast.properties.periods[i].icon +"' style='width: 65%; border-radius: 10%;'></div>" +
-				"<div class='col'>" + forecast.properties.periods[i].detailedForecast + "</div></div>";}
+			str = "<<div class='row' style='margin: 10px;'><hr>" + forecast.properties.periods[i].name + "</div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 40%; border-radius: 10%;'></center></div>" +
+				"<div class='row' style='margin-top: 10px;'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 		else {
 			str += "<div class='row' style='margin: 10px;'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><div class='col'><img src='" + forecast.properties.periods[i].icon +"' style='width: 65%; border-radius: 10%;'></div>" +
-				"<div class='col'>" + forecast.properties.periods[i].detailedForecast + "</div></div>";}
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 40%; border-radius: 10%;'></center></div>" +
+				"<div class='row' style='margin-top: 10px;'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 	};
 	return str; 
 }

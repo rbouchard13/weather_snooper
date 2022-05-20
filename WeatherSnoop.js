@@ -123,6 +123,7 @@ async function getForecast(lat,lng) {
 	if (response.status === 500) {
 		document.getElementById("svnDay").innerHTML = "There was an error with the forecast data." +
 		" This page automatically updates every five minutes. If you would like your forecast sooner, please refresh your browser session."; 
+		getForecast(lat,lng);
 		return;
 	}
 	let strForecast = loadForecast(forecast);

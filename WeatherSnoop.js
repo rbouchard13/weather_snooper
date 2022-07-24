@@ -31,6 +31,7 @@ geocoder.on('clear', () => {
 });
 
 
+
 function loadMap() {
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
@@ -41,6 +42,16 @@ function loadMap() {
 	});
 	getLocation();
 }
+
+function toggleForecast() {
+	let x = document.getElementById("forecastWrapper");
+	if (x.style.display === "block") {
+		x.style.display = "none";
+	} else {
+		x.style.display = "block";
+	}
+}
+
 function getLocation() {
   	if (navigator.geolocation) {
     		navigator.geolocation.getCurrentPosition(getUserPosition);
@@ -122,8 +133,8 @@ async function getForecast(lat,lng) {
 	var forecast = await response.json(); console.log(forecast);
 	if (response.status === 500) {
 		document.getElementById("svnDay").innerHTML = "There was an error with the forecast data." +
-		" This page automatically updates every five minutes. If you would like your forecast sooner, please refresh your browser session."; 
-		getForecast(lat,lng);
+		" This page automatically updates every five minutes. If you would like your forecast sooner, please refresh your browser session.";
+		getForecast(lat,lng); 
 		return;
 	}
 	let strForecast = loadForecast(forecast);
@@ -159,7 +170,7 @@ async function xmlParse(xml) {
 		let lng2 = "" + x[i].getElementsByTagName("longitude")[0].childNodes[0].nodeValue + "";
 		let dist = distance(lat, lat2, lng, lng2);
 		let data = {name: x[i].getElementsByTagName("station_id")[0].childNodes[0].nodeValue, lat: lat2, lng: lng2, distance: dist};
-		obsStations.push(data); 
+		obsStations.push(data);
 	}
 	obsStations.sort(function (a, b) {
 		return a.distance - b.distance
@@ -168,11 +179,12 @@ async function xmlParse(xml) {
 	var response = await fetch(url);
 	var current = await response.json(); console.log(current);
 	addWeather(current);
-	document.getElementById("station").innerHTML = obsStations[0].name;	
+	//document.getElementById("station").innerHTML = obsStations[0].name;	
 }
 
 function addWeather(current) {
-	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 95%; border-radius: 15%;' title='" + current.properties.textDescription + "'>";
+	document.getElementById("station").innerHTML = obsStations[0].name;
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border-radius: 15px;' title='" + current.properties.textDescription + "'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";
@@ -199,13 +211,13 @@ function loadForecast(forecast) {
 	let str = "";
 	for (i = 0; i <= 13; i++) {
 		if(str === '') {
-			str = "<div class='row' style='margin: 10px;'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 40%; border-radius: 10%;'></center></div>" +
-				"<div class='row' style='margin-top: 10px;'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
+			str = "<div class='row'><hr>" + forecast.properties.periods[i].name + "</div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 		else {
-			str += "<div class='row' style='margin: 10px;'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 40%; border-radius: 10%;'></center></div>" +
-				"<div class='row' style='margin-top: 10px;'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
+			str += "<div class='row'><hr>" + forecast.properties.periods[i].name + "</div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 	};
 	return str; 
 }
@@ -240,20 +252,10 @@ function distance(lat, lat2, lng, lng2) {
 	return(c * r);
 }
 
-function changeMode() {
-	if (document.getElementById("mode").innerText === "Dark Mode" ){
-		map.setStyle('mapbox://styles/mapbox/dark-v10');
-		getRadar();
-		document.getElementById("mode").innerText = "Satellite Mode";}
-	else {
-		map.setStyle('mapbox://styles/mapbox/satellite-v9');
-		getRadar();
-		document.getElementById("mode").innerText = "Dark Mode";}
-}
 
 function openNav() {
 	let curWidth = document.getElementById("curdetails").offsetWidth +10;
-  	document.getElementById("mySidenav").style.width = curWidth + "px";
+  	document.getElementById("mySidenav").style.width = "400px"; //curWidth + "px";
 	document.getElementById("menu").style.width = "0";
 }
 
@@ -262,7 +264,7 @@ function closeNav() {
 }
 
 function openMenu() {
-	let curWidth = document.getElementById("curdetails").offsetWidth +10;
+	let curWidth = document.getElementById("curdetails").offsetWidth + 10;
   	document.getElementById("menu").style.width = curWidth + "px";
 }
 

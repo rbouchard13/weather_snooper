@@ -124,6 +124,7 @@ body {
 	font-family: 'Acme', sans-serif;
 	height: 85%;
 	width: auto;
+	
 }
 
 #svnDay {
@@ -135,6 +136,7 @@ body {
 	margin-left: 3px;
 	margin-right: 3px;
 	overflow-y: scroll;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);
 }
 
 #alerts {

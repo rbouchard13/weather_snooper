@@ -128,7 +128,7 @@ body {
 }
 
 #svnDay {
-	border: solid 3px;
+	border: outset 4px;
 	color: #8d32a8;
 	font-family: 'Acme', sans-serif;
 	font-size: 15px;

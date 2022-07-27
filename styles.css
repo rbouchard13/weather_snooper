@@ -104,6 +104,7 @@ body {
 
 .button1 {
 	font-family: 'Acme', sans-serif;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);
 	border-radius: 12px;
 	background-color: #18fc03;
 	padding: 3px;

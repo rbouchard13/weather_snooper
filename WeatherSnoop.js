@@ -184,7 +184,7 @@ async function xmlParse(xml) {
 
 function addWeather(current) {
 	document.getElementById("station").innerHTML = obsStations[0].name;
-	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border-radius: 15px;' title='" + current.properties.textDescription + "'>";
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";
@@ -212,11 +212,11 @@ function loadForecast(forecast) {
 	for (i = 0; i <= 13; i++) {
 		if(str === '') {
 			str = "<div class='row'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;'></center></div>" +
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 		else {
 			str += "<div class='row'><hr>" + forecast.properties.periods[i].name + "</div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;'></center></div>" +
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 	};
 	return str; 

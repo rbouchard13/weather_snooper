@@ -213,11 +213,11 @@ function loadForecast(forecast) {
 		if(str === '') {
 			str = "<div class='row'><strong>" + forecast.properties.periods[i].name + "</strong></div>" + 
 				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
-				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "<hr></div>";}
 		else {
 			str += "<div class='row'><strong>" + forecast.properties.periods[i].name + "</strong></div>" + 
 				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
-				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "<hr></div>";}
 	};
 	return str; 
 }

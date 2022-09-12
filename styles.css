@@ -134,6 +134,8 @@ body {
 }
 
 #forecast {
+	display: flex;
+	flex-direction: column;
 	text-align: center;
 	color: #8d32a8;
 	font-family: 'Acme', sans-serif;
@@ -144,13 +146,14 @@ body {
 }
 
 #svnDay, #hourly {
+	display: flex;
 	position: relative;
 	text-align: center;
 	width: auto;
 	color: #8d32a8;
 	font-family: 'Acme', sans-serif;
 	font-size: 15px;
-	height: 93%;
+	height: 100%;
 	overflow-y: scroll;
 }
 

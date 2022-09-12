@@ -29,19 +29,17 @@ body {
   	box-shadow: 5px 5px 5px black;
 }
 
-
 .grid-container {
   	display: grid;
   	grid-template-columns: auto auto;
   	padding: 3px;
 	margin:auto;
 }
+
 .grid-item {
   	padding: 3px;
 	margin: auto;
 }
-
-
 
 #map {
   	position: absolute;
@@ -73,7 +71,7 @@ body {
 	margin-top: 13px; 
 	margin-left: 13px; 
 	padding: 13px; 
-	width: 375px; 
+	width: 325px; 
 	height: auto; 
 	background-color: rgba(179,179,179,.8);
 	position: absolute; 

@@ -30,8 +30,6 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
-
-
 function loadMap() {
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
@@ -43,13 +41,21 @@ function loadMap() {
 	getLocation();
 }
 
-function toggleForecast() {
-	let x = document.getElementById("forecastWrapper");
-	if (x.style.display === "block") {
-		x.style.display = "none";
+function toggleForecast(period) {
+	document.getElementById("forecastWrapper").style.display = "block";
+	if (period === "week") {
+		document.getElementById("forecastPeriod").innerText = "7 Day Forecast";
+		document.getElementById("svnDay").style.display = "block";
+		document.getElementById("hourly").style.display = "none";
 	} else {
-		x.style.display = "block";
+		document.getElementById("forecastPeriod").innerText = "Hourly Forecast";
+		document.getElementById("svnDay").style.display = "none";
+		document.getElementById("hourly").style.display = "block";
 	}
+}
+
+function closeForecast() {
+	document.getElementById("forecastWrapper").style.display = "none";
 }
 
 function getLocation() {
@@ -137,8 +143,12 @@ async function getForecast(lat,lng) {
 		getForecast(lat,lng); 
 		return;
 	}
+	var hourForecast = await fetch(forecastUrl + "/hourly");
+	var hourResponse = await hourForecast.json(); console.log(hourResponse);
 	let strForecast = loadForecast(forecast);
+	let hourFrcast = loadHourly(hourResponse);
 	document.getElementById("svnDay").innerHTML = strForecast;
+	document.getElementById("hourly").innerHTML = hourFrcast;
 }
 
 async function showPosition(lat,lng) {
@@ -184,7 +194,7 @@ async function xmlParse(xml) {
 
 function addWeather(current) {
 	document.getElementById("station").innerHTML = obsStations[0].name;
-	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "'>";
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border: 1px solid black; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";
@@ -211,13 +221,30 @@ function loadForecast(forecast) {
 	let str = "";
 	for (i = 0; i <= 13; i++) {
 		if(str === '') {
-			str = "<div class='row'><strong>" + forecast.properties.periods[i].name + "</strong></div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
-				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "<hr></div>";}
+			str = "<div class='row'><strong><u>" + forecast.properties.periods[i].name + "</u></strong></div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 		else {
-			str += "<div class='row'><strong>" + forecast.properties.periods[i].name + "</strong></div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 30%; border-radius: 10%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
-				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "<hr></div>";}
+			str += "<div class='row'><strong><u>" + forecast.properties.periods[i].name + "</u></strong></div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
+	};
+	return str; 
+}
+
+function loadHourly(forecast) {
+	let str = "";
+	for (i = 0; i <= 13; i++) {
+		let date = new Date(forecast.properties.periods[i].startTime).toString().split(" ");
+		let period = date[0] + " " + date[1] + " " + date[2] + " " + date[3] + " " + date[4];
+		if(str === '') {
+			str = "<div class='row'><strong><u>" + period + "</u></strong></div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
+		else {
+			str += "<div class='row'><strong><u>" + period + "</u></strong></div>" + 
+				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
 	};
 	return str; 
 }

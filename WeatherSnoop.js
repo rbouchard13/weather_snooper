@@ -235,14 +235,31 @@ function loadForecast(forecast) {
 function loadHourly(forecast) {
 	let str = "";
 	for (i = 0; i <= 13; i++) {
+		let timePeriod;
+		let newTime;
 		let date = new Date(forecast.properties.periods[i].startTime).toString().split(" ");
-		let period = date[0] + " " + date[1] + " " + date[2] + " " + date[3] + " " + date[4];
+		let time = date[4].split(":");
+		if (time[0] > 11) {
+			timePeriod = "PM"
+			if (time[0] > 12 ) {
+				newTime = Number(time[0]) - 12;
+			} else {
+				newTime = Number(12);
+			}
+		} else {
+			timePeriod = "AM";
+			newTime = Number(time[0]);
+			if (newTime === 00) {
+				newTime = Number(12);
+			}
+		}
+		let period = "<strong><u>" + date[0] + " " + date[1] + " " + date[2] + " " + date[3] + "</u><br>" + newTime  + " " + timePeriod + "</strong>";
 		if(str === '') {
-			str = "<div class='row'><strong><u>" + period + "</u></strong></div>" + 
+			str = "<div class='row'>" + period + "</div>" + 
 				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
 		else {
-			str += "<div class='row'><strong><u>" + period + "</u></strong></div>" + 
+			str += "<div class='row'>" + period + "</div>" +  
 				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
 	};

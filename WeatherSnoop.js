@@ -30,7 +30,13 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
+async function logAccess() {
+ 	var response = await fetch('https://api.13media13.com/weathersnooper/access')
+	getRad = await response.json();
+}
+
 function loadMap() {
+	logAccess();
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
   		container: 'map',

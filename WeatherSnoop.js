@@ -30,13 +30,8 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
-async function logAccess() {
- 	var response = await fetch('https://api.13media13.com/weathersnooper/access')
-	getRad = await response.json();
-}
 
 function loadMap() {
-	logAccess();
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
   		container: 'map',
@@ -174,7 +169,11 @@ async function showPosition(lat,lng) {
 
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
-	}	
+	}
+	var testshit = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
+	var testresp = await testshit.json(); let address = testresp.features[0].place_name
+ 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
+	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)	
 }
 
 async function xmlParse(xml) {	

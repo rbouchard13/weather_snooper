@@ -2,6 +2,9 @@
 <head>
 	<title>Weather Snooper</title>
     	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    		<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+    		<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    		<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
     	<script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
     	<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
@@ -35,7 +38,7 @@
 <div id="main">	
 	<div id="map"></div>
 	<div id="curdetails">
-		<center><div id="geocoder"</div></center>
+		<center><div id="geocoder"></div></center>
 		<div style="margin-top: 10px;"><center>
 			Current Conditions @ <span id="station"></span></center>
 		</div>
@@ -54,18 +57,9 @@
 			</div>
 		</div>
 			<div id="topMenu" style="text-align: center;">
-				<figure>
-					<img src="images/weekly.png" class="menuImg" onClick="toggleForecast('week')" alt="" />
-					<figcaption>7 Day</figcaption>
-				</figure>
-				<figure>
-					<img src="images/hourly.png" class="menuImg" onClick="toggleForecast('hour')" alt="" />
-					<figcaption>Hourly</figcaption>
-				</figure>
-				<figure>
-					<img src="images/about.png" class="menuImg" onClick="showAbout()"  alt="" />
-					<figcaption>About</figcaption>
-				</figure>
+				<img src="images/weekly.png" class="menuImg" onClick="toggleForecast('week')" alt="" />
+				<img src="images/hourly.png" class="menuImg" onClick="toggleForecast('hour')" alt="" />
+				<img src="images/about.png" class="menuImg" onClick="showAbout()"  alt="" />
 			</div>
 			<div id="forecastWrapper">
 			<div id="forecast">
@@ -77,8 +71,21 @@
 			</div>
 				<div id="noaa" style="text-align: center; font-size: 15px; margin-top: 15px;">Data Provided by<br><img src="images/noaa.png" style="opacity: 1.0; width: 55px;"></div>
 			</div>
-
 	</div>
+  	<!--<div class="chat-wrapper">
+	<div id="chat-head">
+      		<input id="email" class="chatInput" type="email" placeholder="Email" /><br />
+      		<input id="password" class="chatInput" type="password" placeholder="Password" /><br />
+      		<button class="button1" id="login">Login</button>
+      		<button class="button1" id="signup">SignUp</button>
+	</div>
+      	<br />
+      	<div id="status"></div>
+      	<div id="chat-box" class="chat chat-viewer"></div>
+      		<input id="message" type="text" class="chat chat-sender" disabled="true" placeholder="Login to Begin Chatting..."/>
+      		<button class="button1" style="width: 50px;" id="write" disabled="true" >Post</button>
+		<div id="name-display"></div><button class="button1" id="logout" style="display: none">Logout</button>
+  	</div>-->
 	<div id="alertcontainer" style="background-color: red; height: 25px; width: 100%; position: absolute; display: none; top: 0;">
 		<div id="alertdiv" behavior="scroll" direction="left"></div>
 	</div>
@@ -100,5 +107,6 @@
 	<div><a href="mailto:snoopprophet@gmail.com"><img src="images/SnoopLogo.png" style="position: absolute; bottom: 20px; right: 20px; width: 8%" title="Email Snoop!"></a></div>
 </div>
 <script src="WeatherSnoop.js"></script>
+<script src="firebase-chat.js"></script>
 </body>
 </html>

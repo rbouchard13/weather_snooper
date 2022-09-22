@@ -170,9 +170,9 @@ async function showPosition(lat,lng) {
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
 	}
-	//var testshit = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
-	//var testresp = await testshit.json(); let address = testresp.features[0].place_name
- 	//var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
+	var revGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
+	var respGeo = await revGeo.json(); let address = respGeo.features[0].place_name
+ 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
 	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)	
 }
 

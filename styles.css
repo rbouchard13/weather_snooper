@@ -11,11 +11,6 @@ body {
 	border-radius: 100px;
 }
 
-figure {
-	display: inline-block;
-	font-size: 13px;
-}
-
 .menuImg {
 	width: 30px;
 	border-radius: 4px;
@@ -25,8 +20,7 @@ figure {
 }
 
 .menuImg:hover {
-  	transform: translateY(-5px);
-  	box-shadow: 5px 5px 5px black;
+	transform: scale(1.15);
 }
 
 .img1:hover {
@@ -118,7 +112,6 @@ figure {
 #svnDay, #hourly {
 	display: flex;
 	flex-direction: column;
-	//position: relative;
 	text-align: center;
 	width: auto;
 	color: #8d32a8;
@@ -133,10 +126,11 @@ figure {
 
 .footer {
    	position: fixed;
+	background-color: rgba(179,179,179);
    	left: 0;
    	bottom: 0;
    	width: 100%;
-	color: white;
+	color: #8d32a8;;
 	font-family: 'Acme', sans-serif;
    	text-align: center;
 }
@@ -167,7 +161,6 @@ figure {
   	background-color: rgba(0,0,0,0.4); 
 }
 
-
 .modal-content {
   	background-color: #fefefe;
   	margin: auto;
@@ -175,8 +168,9 @@ figure {
  	border: 1px solid #888;
   	width: 60%;
 	font-family: Arial, Helvetica, sans-serif;
+	max-height: 70vh;
+	overflow-y: scroll;
 }
-
 
 .close {
 	position: absolute;
@@ -199,15 +193,16 @@ figure {
 	text-align: center;
 	margin-left: 10px;
 	margin-right: 10px;
+	
 }
-
 
 @media screen and (max-width: 800px) {
   #curdetails {
     	width: 80%;
 	margin-left: 10%;
   }
-   .modal-content {
-	   width: 90%;
+	.modal-content {
+		width: 90%;
 	}
 }
+

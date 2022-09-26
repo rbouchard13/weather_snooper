@@ -10,7 +10,7 @@
     	<link href="styles.css" rel="stylesheet" />
 	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
 	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
-	<link rel="shortcut icon" type="image/png" href="images/android-chrome-192x192.png"/>
+	<link rel="shortcut icon" type="image/png" href="images/SnoopLogo.png"/>
 <style>
 #geocoder{
 	position: relative;
@@ -56,12 +56,12 @@
 			<div id="topMenu" style="text-align: center;">
 				<img src="images/weekly.png" class="menuImg" onClick="toggleForecast('week')" alt="" />
 				<img src="images/hourly.png" class="menuImg" onClick="toggleForecast('hour')" alt="" />
-				<img src="images/about.png" class="menuImg" onClick="showAbout()"  alt="" />
+				<img src="images/about.png" class="menuImg" onClick="showModal('about')"  alt="" />
 			</div>
 			<div id="forecastWrapper">
 			<div id="forecast">
 				<div style='background-color: #18fc03; border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'><span id="forecastPeriod"></span>
-					<span style="float: right; margin-right: 10px; cursor: pointer;" onClick="closeForecast()">&times;</span>
+					<span style="float: right; margin-right: 10px; cursor: pointer;" onClick="toggleForecast('close')">&times;</span>
 				</div>
 				<div id="svnDay"></div>
 				<div id="hourly"></div>
@@ -69,18 +69,26 @@
 				<div id="noaa" style="text-align: center; font-size: 15px; margin-top: 15px;">Data Provided by<br><img src="images/noaa.png" style="opacity: 1.0; width: 55px;"></div>
 			</div>
 	</div>
-	<div id="alertcontainer" style="background-color: red; height: 25px; width: 100%; position: absolute; display: none; top: 0;">
+	<div id="alertcontainer" onClick="showModal('alert');" style="background-color: red; height: 25px; width: 100%; position: absolute; display: none; top: 0;">
 		<div id="alertdiv" behavior="scroll" direction="left"></div>
+	</div>
+	<div id="alertMod" class="modal">
+		<div class="modal-content">
+		<div class="close" onClick="closeModal('alert')">&times;</div>
+			<div id="alertModal" style="margin-top: 20px; text-align: center; color: red;">
+			</div>
+  		</div>
 	</div>
 	<div id="aboutMod" class="modal">
 		<div class="modal-content">
-		<div class="close" onClick="closeAbout()">&times;</div>
+		<div class="close" onClick="closeModal('about')">&times;</div>
 			<div style="margin-top: 20px; text-align: center;">
 				<p>Weathersnooper.com was created with a vision of making weather easier for the masses! For best use, enable location on your device to pin point your location! Weathersnooper is fully 
 					integrated with NOAA forecasts and will provide you 7 day, hourly and radar for your location within the United States.</p>
+				<p>To change your location, either click/tap the map at yoru perfered location or enter your perfered location into the search!</p>
+				<p>If Alerts for your location are present, they will scroll across the top of your screen. Click on the scrolling text for a pop up of the full alert.</p>
 				<p>Weathersnooper.com is owned and developed by <a href="https://13media13.com" target="_blank">1313 Media LLC</a>. Feel free to contact us with any suggestions
 				or if you have any development needs at <a href="mailto:contact@13media13.com">contact@13media13.com</a></p>
-
 				<p>This one was for you Papa Bear!</p>
 				<img src="images/papabear.jpg" width="300px;"/>
 			</div>

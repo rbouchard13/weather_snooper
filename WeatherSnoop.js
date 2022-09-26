@@ -2,9 +2,9 @@ var obsStations = [];
 var lat;
 var lng;
 var markers = [];
-var grid;
 var activeAlerts;
 var getRad;
+var radTiles = [];
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 
@@ -30,7 +30,6 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
-
 function loadMap() {
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
@@ -39,10 +38,23 @@ function loadMap() {
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
-	getLocation();
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition((pos) => {
+			lat = pos.coords.latitude;
+			lng = pos.coords.longitude;
+			loadXMLDoc();
+		})
+	} else {
+			alert("Geolocation is not supported by this browser.");
+	}
+	getRadar();
 }
 
 function toggleForecast(period) {
+	if (period === "close") {
+		document.getElementById("forecastWrapper").style.display = "none";
+		return;
+	}
 	document.getElementById("forecastWrapper").style.display = "block";
 	if (period === "week") {
 		document.getElementById("forecastPeriod").innerText = "7 Day Forecast";
@@ -55,36 +67,31 @@ function toggleForecast(period) {
 	}
 }
 
-function closeForecast() {
-	document.getElementById("forecastWrapper").style.display = "none";
-}
-
-function getLocation() {
-  	if (navigator.geolocation) {
-    		navigator.geolocation.getCurrentPosition(getUserPosition);
-  	} else {
-    		alert("Geolocation is not supported by this browser.");
-  	}
-}
-
-function getUserPosition(position) {
-	lat = position.coords.latitude;
-	lng = position.coords.longitude;
-	loadXMLDoc();
+async function loadXMLDoc() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+	  xmlParse(this);
+		  }
+	};
+	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
+	xhttp.send();
+  getForecast(lat,lng);
+  showPosition(lat,lng);
 }
 
 async function getRadar() {
  	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
-	console.log(getRad)
-            	var i = 0;
+	radTiles.push(getRad.radar.past); console.log(radTiles);
+        var i = 0;
 		var f = 1;
             	const interval = setInterval(() => {
 			let fr = f * - 1;
 			map.getStyle().layers.forEach((layer) => {
     				if (layer.id === "radar" + fr) {
 					setTimeout(()=> {
-        					map.removeLayer(layer.id)
+        					map.removeLayer(layer.id);
         					map.removeSource(layer.id);
 					}, 250);
     				}
@@ -104,6 +111,7 @@ async function getRadar() {
 				paint: {"raster-opacity" : 0.5},
                 		source: {
                   			type: "raster",
+							id: `radar` + f,
                   			tiles: [
                     				getRad.host + getRad.radar.past[i].path + '/512/{z}/{x}/{y}/6/1_1.png'
                   			],
@@ -116,20 +124,6 @@ async function getRadar() {
 			f = f * - 1;
 			if (i === getRad.radar.past.length) {i = 0};
             	}, 750);
-}
-
-async function loadXMLDoc() {
-  	var xhttp = new XMLHttpRequest();
-  	xhttp.onreadystatechange = function() {
-    	if (this.readyState == 4 && this.status == 200) {
-		xmlParse(this);
-    		}
-  	};
-  	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
-  	xhttp.send();
-	getForecast(lat,lng);
-	showPosition(lat,lng);
-	getRadar();
 }
 
 async function getForecast(lat,lng) {
@@ -170,10 +164,9 @@ async function showPosition(lat,lng) {
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
 	}
-	var revGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
-	var respGeo = await revGeo.json(); let address = respGeo.features[0].place_name
- 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
-	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)	
+	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
+	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
+ 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)	
 }
 
 async function xmlParse(xml) {	
@@ -193,8 +186,7 @@ async function xmlParse(xml) {
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json(); console.log(current);
-	addWeather(current);
-	//document.getElementById("station").innerHTML = obsStations[0].name;	
+	addWeather(current);	
 }
 
 function addWeather(current) {
@@ -283,8 +275,8 @@ function alertsPresent(marker, alerts){
 	var newA = activeAlerts.replace(/\n/g, " ");
 	document.getElementById("alertcontainer").style.display = "block";
 	document.getElementById("alertdiv").innerHTML = "<marquee behavior='scroll' direction='left' style='color: white; font-family: 'Times New Roman', Times, serif;'>" + newA + "</marquee>"
+	document.getElementById("alertModal").innerHTML = newA;
 }
-
 
 function distance(lat, lat2, lng, lng2) {
 	lng = lng * Math.PI / 180;
@@ -301,32 +293,18 @@ function distance(lat, lat2, lng, lng2) {
 	return(c * r);
 }
 
-
-function openNav() {
-	let curWidth = document.getElementById("curdetails").offsetWidth +10;
-  	document.getElementById("mySidenav").style.width = "400px"; //curWidth + "px";
-	document.getElementById("menu").style.width = "0";
-}
-
-function closeNav() {
-  	document.getElementById("mySidenav").style.width = "0";
-}
-
-function openMenu() {
-	let curWidth = document.getElementById("curdetails").offsetWidth + 10;
-  	document.getElementById("menu").style.width = curWidth + "px";
-}
-
-function closeMenu() {
-  	document.getElementById("menu").style.width = "0";
-}
-
 function newLoc(event) {
 		let loc = JSON.parse(JSON.stringify(event.lngLat));
 		let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
 		let xlng = loc.lng - lng; xlng = xlng.toFixed(4);
 		var msg = confirm("You are about to move to a new location. Are you sure you want to?")
-		if (msg == true) {
+		if (msg === true) {
+			map.getStyle().layers.forEach((layer) => {
+				if (layer.id === "radar1" || layer.id === "radar-1") {
+						map.removeLayer(layer.id);
+						map.removeSource(layer.id);
+				}
+		});
 		lat = loc.lat;
 		lng = loc.lng;
 		markers.forEach((item) => {item.remove();});
@@ -338,21 +316,35 @@ function newLoc(event) {
 	}
 }
 
-function showAbout() {
-	let modal = document.getElementById("aboutMod");
-	modal.style.display = "block";
-	document.getElementById("menu").style.width = "0";
+function showModal(section) {
+	if (section === "about") {
+		let modal = document.getElementById("aboutMod");
+		modal.style.display = "block";
+	} else if (section === "alert") {
+		let modal = document.getElementById("alertMod");
+
+		modal.style.display = "block";
+	}
 }
 
-function closeAbout() {
-	let modal = document.getElementById("aboutMod");
-  	modal.style.display = "none";
+function closeModal(section) {
+	if (section === "about") {
+		let modal = document.getElementById("aboutMod");
+		modal.style.display = "none";
+	} else if (section === "alert") {
+		let modal = document.getElementById("alertMod");
+		modal.style.display = "none";
+	}
 }
 
 window.onclick = function(event) {
-	let modal = document.getElementById("aboutMod");
-  	if (event.target == modal) {
-    		modal.style.display = "none";
+	let modal1 = document.getElementById("aboutMod");
+  	if (event.target == modal1) {
+    		modal1.style.display = "none";
+  	}
+	let modal2 = document.getElementById("alertMod");
+  	if (event.target == modal2) {
+    		modal2.style.display = "none";
   	}
 }
 

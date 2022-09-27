@@ -39,6 +39,7 @@ function loadMap() {
 		center: [-98.35, 39.5],
   		zoom: 4,
 	});
+	getRadar();
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((pos) => {
 			lat = pos.coords.latitude;
@@ -49,7 +50,6 @@ function loadMap() {
 	} else {
 			alert("Geolocation is not supported by this browser.");
 	}
-	getRadar();
 }
 
 async function logUse(lng,lat) {

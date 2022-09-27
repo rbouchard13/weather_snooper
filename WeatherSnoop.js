@@ -76,10 +76,6 @@ function toggleForecast(period) {
 }
 
 async function loadXMLDoc() {
-	if (!getRad) {
-		loadXMLDoc();
-		return;
-	}
 	let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time;
 	checkRadar(lastRad);
 	var xhttp = new XMLHttpRequest();

@@ -80,50 +80,43 @@ async function loadXMLDoc() {
   showPosition(lat,lng);
 }
 
-async function getRadar() {
- 	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+async function getRadar(){
+	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
-	radTiles.push(getRad.radar.past); console.log(radTiles);
-        var i = 0;
-		var f = 1;
-            	const interval = setInterval(() => {
-			let fr = f * - 1;
-			map.getStyle().layers.forEach((layer) => {
-    				if (layer.id === "radar" + fr) {
-					setTimeout(()=> {
-        					map.removeLayer(layer.id);
-        					map.removeSource(layer.id);
-					}, 250);
-    				}
-			});
-			let nDate = new Date(getRad.radar.past[i].time * 1000).toString().split(" ");
-			let nTime = nDate[4].split(":");
-			let tmPer = "am";
-			if (nTime[0] > 11 ) {tmPer = "pm";};
-			if (nTime[0] > 12) {
-				nTime[0] = nTime[0] - 12;}
-			let disTime = nTime[0] + ":" + nTime[1];
-			let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime + tmPer;
-			document.getElementById("footer").innerHTML = footDate;
-              		map.addLayer({
-                		id: `radar` + f,
-                		type: "raster",
-				paint: {"raster-opacity" : 0.5},
-                		source: {
-                  			type: "raster",
-							id: `radar` + f,
-                  			tiles: [
-                    				getRad.host + getRad.radar.past[i].path + '/512/{z}/{x}/{y}/6/1_1.png'
-                  			],
-                  			tileSize: 512
-                		},
-                		layout: {visibility: "visible"},
-                		minzoom: 0
-              		});
-			i++; 
-			f = f * - 1;
-			if (i === getRad.radar.past.length) {i = 0};
-            	}, 750);
+	var i = 0;
+	getRad.radar.past.forEach(item => {
+		map.addLayer({
+			id: `radar` + i,
+			type: "raster",
+			paint: {"raster-opacity" : 0},
+			source: {
+				  type: "raster",
+					id: `radar` + i,
+				  	tiles: [
+						getRad.host + item.path + '/512/{z}/{x}/{y}/6/1_1.png'
+				  	],
+				  	tileSize: 512
+			},
+			layout: {visibility: "visible"},
+			minzoom: 0
+		  }); radTiles.push("radar" + i); i++;		
+	})
+	i = 0; var p;
+	setInterval(() => {
+		radTiles.forEach((item) => {
+			map.setPaintProperty(item,"raster-opacity",0);
+		})
+		map.setPaintProperty("radar" + i,"raster-opacity",0.5);
+		let nDate = new Date(getRad.radar.past[i].time * 1000).toString().split(" ");
+		let nTime = nDate[4].split(":");
+		nTime[0] > 11 ? tmPer = "pm" : tmPer = "am";
+		if (nTime[0] > 12) {nTime[0] = nTime[0] - 12;}
+		let disTime = nTime[0] + ":" + nTime[1];
+		let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime + tmPer;
+		document.getElementById("footer").innerHTML = footDate;
+		i++;
+		if (i === radTiles.length) i = 0;
+	}, 750)
 }
 
 async function getForecast(lat,lng) {
@@ -131,7 +124,7 @@ async function getForecast(lat,lng) {
 	var grid = await response.json(); 
 	forecastUrl = grid.properties.forecast;
 	var response = await fetch(forecastUrl);
-	var forecast = await response.json(); console.log(forecast);
+	var forecast = await response.json();
 	if (response.status === 500) {
 		document.getElementById("svnDay").innerHTML = "There was an error with the forecast data." +
 		" This page automatically updates every five minutes. If you would like your forecast sooner, please refresh your browser session.";
@@ -139,7 +132,7 @@ async function getForecast(lat,lng) {
 		return;
 	}
 	var hourForecast = await fetch(forecastUrl + "/hourly");
-	var hourResponse = await hourForecast.json(); console.log(hourResponse);
+	var hourResponse = await hourForecast.json();
 	let strForecast = loadForecast(forecast);
 	let hourFrcast = loadHourly(hourResponse);
 	document.getElementById("svnDay").innerHTML = strForecast;
@@ -148,7 +141,7 @@ async function getForecast(lat,lng) {
 
 async function showPosition(lat,lng) {
 	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
-	alerts = await response.json(); console.log(alerts);
+	alerts = await response.json();
 	var marker = new mapboxgl.Marker({
 		color: "#18fc03"
 	})
@@ -185,7 +178,7 @@ async function xmlParse(xml) {
 	})
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
-	var current = await response.json(); console.log(current);
+	var current = await response.json();
 	addWeather(current);	
 }
 
@@ -299,12 +292,6 @@ function newLoc(event) {
 		let xlng = loc.lng - lng; xlng = xlng.toFixed(4);
 		var msg = confirm("You are about to move to a new location. Are you sure you want to?")
 		if (msg === true) {
-			map.getStyle().layers.forEach((layer) => {
-				if (layer.id === "radar1" || layer.id === "radar-1") {
-						map.removeLayer(layer.id);
-						map.removeSource(layer.id);
-				}
-		});
 		lat = loc.lat;
 		lng = loc.lng;
 		markers.forEach((item) => {item.remove();});

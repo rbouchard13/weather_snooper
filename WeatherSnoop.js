@@ -76,8 +76,6 @@ function toggleForecast(period) {
 }
 
 async function loadXMLDoc() {
-	let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time;
-	checkRadar(lastRad);
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
@@ -86,6 +84,8 @@ async function loadXMLDoc() {
 	};
 	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
 	xhttp.send();
+let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time;
+checkRadar(lastRad);
   getForecast(lat,lng);
   showPosition(lat,lng);
 }

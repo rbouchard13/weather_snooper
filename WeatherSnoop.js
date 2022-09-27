@@ -5,6 +5,7 @@ var markers = [];
 var activeAlerts;
 var getRad;
 var radTiles = [];
+var eTime;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 
@@ -43,11 +44,18 @@ function loadMap() {
 			lat = pos.coords.latitude;
 			lng = pos.coords.longitude;
 			loadXMLDoc();
+			logUse(lng,lat);
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
 	}
 	getRadar();
+}
+
+async function logUse(lng,lat) {
+	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
+	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
+	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)		
 }
 
 function toggleForecast(period) {
@@ -68,6 +76,8 @@ function toggleForecast(period) {
 }
 
 async function loadXMLDoc() {
+	let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time;
+	checkRadar(lastRad);
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
@@ -78,6 +88,35 @@ async function loadXMLDoc() {
 	xhttp.send();
   getForecast(lat,lng);
   showPosition(lat,lng);
+}
+
+async function checkRadar(lastRad) {
+	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+	getRad = await response.json();
+	if (getRad.radar.past[getRad.radar.past.length - 1].time === lastRad) {
+		console.log("radar up to date")
+	} else {
+		console.log("new Radar available")
+		map.addLayer({
+			id: `radar` + radTiles.length,
+			type: "raster",
+			paint: {"raster-opacity" : 0},
+			source: {
+				  type: "raster",
+					id: `radar` + radTiles.length,
+				  	tiles: [
+						getRad.host + getRad.radar.past[getRad.radar.past.length - 1].path + '/512/{z}/{x}/{y}/6/1_1.png'
+				  	],
+				  	tileSize: 512
+			},
+			layout: {visibility: "visible"},
+			minzoom: 0
+		  }); 
+		  radTiles.push("radar" + radTiles.length);
+		  eTime = new Date(getRad.radar.past[getRad.radar.past.length - 1].time * 1000).toString().split(" ");
+		  let radEnd = convertTime(eTime);
+		  document.getElementById("radEnd").innerHTML = radEnd;
+	}
 }
 
 async function getRadar(){
@@ -107,16 +146,23 @@ async function getRadar(){
 			map.setPaintProperty(item,"raster-opacity",0);
 		})
 		map.setPaintProperty("radar" + i,"raster-opacity",0.5);
-		let nDate = new Date(getRad.radar.past[i].time * 1000).toString().split(" ");
-		let nTime = nDate[4].split(":");
-		nTime[0] > 11 ? tmPer = "pm" : tmPer = "am";
-		if (nTime[0] > 12) {nTime[0] = nTime[0] - 12;}
-		let disTime = nTime[0] + ":" + nTime[1];
-		let footDate = nDate[0] + " " + nDate[1] + " " + nDate[2] + " " + nDate[3] + " " + disTime + tmPer;
-		document.getElementById("footer").innerHTML = footDate;
 		i++;
 		if (i === radTiles.length) i = 0;
 	}, 750)
+	let stime = new Date(getRad.radar.past[0].time * 1000).toString().split(" ");
+	eTime = new Date(getRad.radar.past[getRad.radar.past.length - 1].time * 1000).toString().split(" ");
+	const radStart = convertTime(stime);
+	let radEnd = convertTime(eTime);
+	document.getElementById("radStart").innerHTML = radStart;
+	document.getElementById("radEnd").innerHTML = radEnd;
+}
+
+function convertTime(timeStamp) {
+	let nTime = timeStamp[4].split(":");
+	nTime[0] > 11 ? tmPer = "pm" : tmPer = "am";
+	if (nTime[0] > 12) {nTime[0] = nTime[0] - 12;}
+	let disTime = nTime[0] + ":" + nTime[1];
+	return timeStamp[0] + " " + timeStamp[1] + " " + timeStamp[2] + " " + disTime + tmPer;
 }
 
 async function getForecast(lat,lng) {
@@ -157,9 +203,6 @@ async function showPosition(lat,lng) {
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
 	}
-	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
-	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
- 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)	
 }
 
 async function xmlParse(xml) {	
@@ -337,4 +380,4 @@ window.onclick = function(event) {
 
 window.onload = loadMap();
 map.on('click', newLoc); 
-setInterval(loadXMLDoc, 300000);
+setInterval(loadXMLDoc, 30000);

@@ -162,14 +162,15 @@ body {
 }
 
 .modal-content {
-  	background-color: #fefefe;
+	background-color: rgba(179,179,179);
   	margin: auto;
   	padding: 20px;
- 	border: 1px solid #888;
   	width: 60%;
 	font-family: Arial, Helvetica, sans-serif;
 	max-height: 70vh;
 	overflow-y: scroll;
+	border: outset 4px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);
 }
 
 .close {

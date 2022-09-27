@@ -84,10 +84,9 @@ async function loadXMLDoc() {
 	};
 	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
 	xhttp.send();
-	;
-	checkRadar();
   	getForecast(lat,lng);
   	showPosition(lat,lng);
+	checkRadar();
 }
 
 async function checkRadar() {

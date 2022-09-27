@@ -49,7 +49,7 @@ function loadMap() {
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
-	}
+	}	
 }
 
 async function logUse(lng,lat) {
@@ -84,13 +84,14 @@ async function loadXMLDoc() {
 	};
 	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
 	xhttp.send();
-let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time;
-checkRadar(lastRad);
-  getForecast(lat,lng);
-  showPosition(lat,lng);
+	;
+	checkRadar();
+  	getForecast(lat,lng);
+  	showPosition(lat,lng);
 }
 
-async function checkRadar(lastRad) {
+async function checkRadar() {
+	let lastRad = getRad.radar.past[getRad.radar.past.length - 1].time
 	var response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
 	getRad = await response.json();
 	if (getRad.radar.past[getRad.radar.past.length - 1].time === lastRad) {

@@ -6,6 +6,7 @@ var activeAlerts;
 var getRad;
 var radTiles = [];
 var eTime;
+var refresh = true;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 
@@ -84,8 +85,9 @@ async function loadXMLDoc() {
 	};
 	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
 	xhttp.send();
+	;
   	getForecast(lat,lng);
-  	showPosition(lat,lng);
+  	if (refresh) showPosition(lat,lng);
 	checkRadar();
 }
 
@@ -199,10 +201,10 @@ async function showPosition(lat,lng) {
 		zoom: 8,
 		essential: true
 	});
-
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
 	}
+	refresh = false;
 }
 
 async function xmlParse(xml) {	
@@ -330,6 +332,7 @@ function distance(lat, lat2, lng, lng2) {
 }
 
 function newLoc(event) {
+		refresh = true;
 		let loc = JSON.parse(JSON.stringify(event.lngLat));
 		let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
 		let xlng = loc.lng - lng; xlng = xlng.toFixed(4);

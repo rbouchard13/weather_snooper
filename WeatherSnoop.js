@@ -22,6 +22,7 @@ geocoder.on('result', (e) => {let geo = e.result;
 	markers.forEach((item) => {item.remove();});
 	markers = [];
 	obsStations = [];
+	refresh = true;
 	loadXMLDoc();
 });
 

@@ -9,6 +9,10 @@ var eTime;
 var refresh = true;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
+const bounds = [
+	[-178.8217, -1.3092],
+	[-34.1789, 65.7688]
+];
 
 const geocoder = new MapboxGeocoder({
 	accessToken: mapboxgl.accessToken,
@@ -40,6 +44,7 @@ function loadMap() {
   		style: 'mapbox://styles/mapbox/satellite-v9',
 		center: [-98.35, 39.5],
   		zoom: 4,
+		//maxBounds: bounds
 	});
 	getRadar();
 	if (navigator.geolocation) {
@@ -57,7 +62,8 @@ function loadMap() {
 async function logUse(lng,lat) {
 	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
-	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)		
+	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
+	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)		
 }
 
 function toggleForecast(period) {
@@ -90,6 +96,13 @@ async function loadXMLDoc() {
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);
 	checkRadar();
+	let marker = markers[0];
+	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
+	alerts = await response.json();
+	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
+	} else {document.getElementById("alertcontainer").style.display = "none";
+	}
+	refresh = false;
 }
 
 async function checkRadar() {
@@ -189,8 +202,6 @@ async function getForecast(lat,lng) {
 }
 
 async function showPosition(lat,lng) {
-	var response = await fetch('https://api.weather.gov/alerts/active?point=' + lat + ',' + lng + '');
-	alerts = await response.json();
 	var marker = new mapboxgl.Marker({
 		color: "#18fc03"
 	})
@@ -202,9 +213,6 @@ async function showPosition(lat,lng) {
 		zoom: 8,
 		essential: true
 	});
-	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
-	} else {document.getElementById("alertcontainer").style.display = "none";
-	}
 	refresh = false;
 }
 
@@ -230,7 +238,7 @@ async function xmlParse(xml) {
 
 function addWeather(current) {
 	document.getElementById("station").innerHTML = obsStations[0].name;
-	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border: 1px solid black; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "'>";
+	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border: 1px solid black; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "' alt='Image Error'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";
 	document.getElementById("currDew").innerHTML = "    " + Math.round((current.properties.dewpoint.value * 9/5) + 32) + "&#8457";

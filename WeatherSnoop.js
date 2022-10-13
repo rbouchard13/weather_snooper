@@ -101,6 +101,12 @@ async function loadXMLDoc() {
 	alerts = await response.json();
 	if (alerts.features.length > 0) {alertsPresent(marker, alerts);
 	} else {document.getElementById("alertcontainer").style.display = "none";
+		document.getElementById("alertdiv").innerHTML = "";
+		let markerElement = marker.getElement();
+		markerElement
+			.querySelectorAll('svg g[fill="' + marker._color + '"]')[0]
+			.setAttribute("fill", "#18fc03");      
+		marker._color = "#18fc03";
 	}
 	refresh = false;
 }
@@ -320,6 +326,7 @@ function alertsPresent(marker, alerts){
 		.setAttribute("fill", "#ff1a1a");      
       	marker._color = "#ff1a1a";
 	var newA = activeAlerts.replace(/\n/g, " ");
+	if (document.getElementById("alertModal").innerHTML === newA) return;
 	document.getElementById("alertcontainer").style.display = "block";
 	document.getElementById("alertdiv").innerHTML = "<marquee behavior='scroll' direction='left' style='color: white; font-family: 'Times New Roman', Times, serif;'>" + newA + "</marquee>"
 	document.getElementById("alertModal").innerHTML = newA;

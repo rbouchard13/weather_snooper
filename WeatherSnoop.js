@@ -276,7 +276,7 @@ function loadForecast(forecast) {
 				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 		else {
 			str += "<div class='row'><strong><u>" + forecast.properties.periods[i].name + "</u></strong></div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'><center><img src='https://api.weather.gov" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].detailedForecast + "</div>";}
 	};
 	return str; 
@@ -306,11 +306,11 @@ function loadHourly(forecast) {
 		let period = "<strong><u>" + date[0] + " " + date[1] + " " + date[2] + " " + date[3] + "</u><br>" + newTime  + " " + timePeriod + "</strong>";
 		if(str === '') {
 			str = "<div class='row'>" + period + "</div>" + 
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'><center><img src='https://api.weather.gov" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
 		else {
 			str += "<div class='row'>" + period + "</div>" +  
-				"<div class='row'><center><img src='" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
+				"<div class='row'><center><img src='https://api.weather.gov" + forecast.properties.periods[i].icon +"' style='width: 65px; border-radius: 10%;border: 1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);'></center></div>" +
 				"<div class='row'>" + forecast.properties.periods[i].shortForecast + ". Temperature " + forecast.properties.periods[i].temperature + ". Winds " + forecast.properties.periods[i].windDirection + " at " + forecast.properties.periods[i].windSpeed + ".</div>";}
 	};
 	return str; 

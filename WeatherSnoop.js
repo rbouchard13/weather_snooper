@@ -114,7 +114,20 @@ async function loadXMLDoc() {
 	obsStations.sort(function (a, b) {
 		return a.distance - b.distance
 	})*/
-	getLocal();
+	obsStations = []
+	var test = await fetch('./data.json');
+	var test2 = await test.json();
+	for (let i = 0; i < test2.length; i++) {
+		let lat2 = test2[i].latitude
+		let lng2 = "" + test2[i].longitude + "";
+		let dist = distance(lat, lat2, lng, lng2);
+		let data = {name: test2[i].icao, lat: lat2, lng: lng2, distance: dist};
+		obsStations.push(data);
+	}
+	obsStations.sort(function (a, b) {
+	return a.distance - b.distance;
+	console.log(obsStations);
+	});
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();

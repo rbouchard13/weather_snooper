@@ -83,16 +83,7 @@ function toggleForecast(period) {
 	}
 }
 
-async function loadXMLDoc() {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-	  xmlParse(this);
-		  }
-	};
-	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
-	xhttp.send();
-	;
+getLocal() {
 	var test = await fetch('./data.json');
 	var test2 = await test.json();
 	for (let i = 0; i < test2.length; i++) {
@@ -103,6 +94,19 @@ async function loadXMLDoc() {
 		obsStations.push(data);
 	}
 	console.log(obsStations);
+}
+
+async function loadXMLDoc() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		getLocal()
+	  xmlParse(this);
+		  }
+	};
+	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
+	xhttp.send();
+	;
 	obsStations.sort(function (a, b) {
 		return a.distance - b.distance
 	})

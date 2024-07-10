@@ -114,6 +114,7 @@ async function loadXMLDoc() {
 	obsStations.sort(function (a, b) {
 		return a.distance - b.distance
 	})*/
+	getLocal();
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();

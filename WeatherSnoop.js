@@ -93,6 +93,10 @@ async function loadXMLDoc() {
 	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
 	xhttp.send();
 	;
+	var test = await fetch('./data.json');
+	var test2 = await.test.json();
+	console.log(test2);
+	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);
 	checkRadar();

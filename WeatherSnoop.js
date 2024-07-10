@@ -96,6 +96,10 @@ async function loadXMLDoc() {
 	var test = await fetch('./data.json');
 	var test2 = await test.json();
 	console.log(test2);
+	test2.forEach(function (arrayItem) {
+    var x = arrayItem.prop1 + 2;
+    console.log(x);
+});
 	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);

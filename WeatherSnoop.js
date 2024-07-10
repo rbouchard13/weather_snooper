@@ -84,7 +84,7 @@ function toggleForecast(period) {
 }
 
 getLocal() {
-	obsStations = [];
+	obsStations.splice(0, obsStations.length);
 	var test = await fetch('./data.json');
 	var test2 = await test.json();
 	for (let i = 0; i < test2.length; i++) {

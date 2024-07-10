@@ -60,9 +60,11 @@ function loadMap() {
 }
 
 async function logUse(lng,lat) {
+	let ip = await fetch("https://api.ipify.org/?format=json");
+	console.log(ip);
 	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
-	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + address)
+	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip)
 	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)		
 }
 

@@ -97,7 +97,8 @@ async function loadXMLDoc() {
 	var test2 = await test.json();
 	console.log(test2);
 	test2.forEach(function (arrayItem) {
-	console.log(arrayItem.icao)
+	let x = arrayItem.icao
+	console.log(x)
 });
 	
   	getForecast(lat,lng);

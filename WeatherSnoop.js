@@ -94,11 +94,13 @@ async function getLocal() {
 		let data = {name: test2[i].icao, lat: lat2, lng: lng2, distance: dist};
 		obsStations.push(data);
 	}
+	obsStations.sort(function (a, b) {
+	return a.distance - b.distance
 	console.log(obsStations);
 }
 
 async function loadXMLDoc() {
-	var xhttp = new XMLHttpRequest();
+	/*var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
 		getLocal()
@@ -110,7 +112,7 @@ async function loadXMLDoc() {
 	;
 	obsStations.sort(function (a, b) {
 		return a.distance - b.distance
-	})
+	})*/
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();

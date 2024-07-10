@@ -95,8 +95,8 @@ async function getLocal() {
 		obsStations.push(data);
 	}
 	obsStations.sort(function (a, b) {
-	return a.distance - b.distance
-	console.log(obsStations)
+	return a.distance - b.distance;
+	console.log(obsStations);
 	});
 }
 

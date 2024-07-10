@@ -98,7 +98,7 @@ async function loadXMLDoc() {
 	console.log(test2);
 	console.log(test2.length)
 	for (i = 0, i < test2.length, i++) {
-		console.log(test2[i].name)};
+		console.log(test2[i].airport)};
 	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);

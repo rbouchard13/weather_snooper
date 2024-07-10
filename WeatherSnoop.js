@@ -97,6 +97,8 @@ async function loadXMLDoc() {
 	var test2 = await test.json();
 	console.log(test2);
 	console.log(test2.length)
+	for (i = 0, i < test2.length, i++) {
+		console.log(test2[i].name)};
 	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);

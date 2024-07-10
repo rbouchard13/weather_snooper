@@ -95,10 +95,21 @@ async function loadXMLDoc() {
 	;
 	var test = await fetch('./data.json');
 	var test2 = await test.json();
-	console.log(test2);
-	console.log(test2.length)
 	for (let i = 0; i < test2.length; i++) {
-		console.log(test2[i].airport)};
+		let lat2 = test2[i].latitude
+		let lng2 = "" + test2[i].longitude + "";
+		let dist = distance(lat, lat2, lng, lng2);
+		let data = {name: test2[i].icao, lat: lat2, lng: lng2, distance: dist};
+		obsStations.push(data);
+	}
+	console.log(obsStations);
+	obsStations.sort(function (a, b) {
+		return a.distance - b.distance
+	})
+	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
+	var response = await fetch(url);
+	var current = await response.json();
+	addWeather(current);
 	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);

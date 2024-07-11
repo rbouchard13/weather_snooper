@@ -234,12 +234,13 @@ async function showPosition(lat,lng) {
 
 	const el = document.createElement('div');
 	el.className = 'marker';
-	el.id = "test";
+	el.id = "radar";
 	el.style.color = "rgba(0, 0, 0, 0)";
 	el.innerHTML = "<img src='images/radar.png' width='30px' />"
 	el.style.width = "25px";
 	el.style.height = "25px";
 	el.style.backgroundSize = '100%';
+	el.style.title = obsStations[0].airport;
 
 	new mapboxgl.Marker(el)
 		.setLngLat([obsStations[0].lng,obsStations[0].lat])
@@ -353,18 +354,19 @@ function distance(lat, lat2, lng, lng2) {
 }
 
 function newLoc(event) {
-		refresh = true;
-		let loc = JSON.parse(JSON.stringify(event.lngLat));
-		let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
-		let xlng = loc.lng - lng; xlng = xlng.toFixed(4);
-		var msg = confirm("You are about to move to a new location. Are you sure you want to?")
-		if (msg === true) {
+	refresh = true;
+	let loc = JSON.parse(JSON.stringify(event.lngLat));
+	let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
+	let xlng = loc.lng - lng; xlng = xlng.toFixed(4);
+	var msg = confirm("You are about to move to a new location. Are you sure you want to?")
+	if (msg === true) {
 		lat = loc.lat;
 		lng = loc.lng;
 		markers.forEach((item) => {item.remove();});
 		markers = [];
 		obsStations = [];
 		loadXMLDoc();
+		document.getElementById("radar").remove();
 	} else {
 		return;
 	}

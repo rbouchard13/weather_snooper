@@ -263,7 +263,7 @@ function addWeather(current) {
 	document.getElementById("currPressure").innerHTML = " " + pressure + "in";
 	if (current.properties.heatIndex.value !== null) {
 		let realfeel = Math.round((current.properties.heatIndex.value * 9/5) + 32);
-		document.getElementById("feelslike").innerHTML = "Feels Like:<span style='margin-left:5px;'>" + realfeel + "&#8457</span>"; 
+		document.getElementById("feels").innerHTML = "Feels Like:<span style='margin-left:5px;'>" + realfeel + "&#8457</span>"; 
 		return;}
 	else if (current.properties.windChill.value !== null) {
 		let realfeel = Math.round((current.properties.windChill.value * 9/5) + 32);

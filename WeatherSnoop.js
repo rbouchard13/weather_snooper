@@ -67,7 +67,7 @@ async function logUse(lng,lat) {
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip + ' | ' + address)
 	var logUpdate = await response.json();
-	console.log(logUpdate);	
+	/*console.log(logUpdate);*/	
 }
 
 function toggleForecast(period) {
@@ -101,7 +101,7 @@ async function loadXMLDoc() {
 	obsStations.sort(function (a, b) {
 	return a.distance - b.distance;
 	});
-	console.log(obsStations);
+	/*console.log(obsStations);*/
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();

@@ -231,7 +231,9 @@ async function showPosition(lat,lng) {
 		essential: true
 	});
 	refresh = false;
-
+	const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+	"" + obsStations[0].airport +""
+	);
 	const el = document.createElement('div');
 	el.className = 'marker';
 	el.id = "radar";
@@ -244,7 +246,7 @@ async function showPosition(lat,lng) {
 
 	new mapboxgl.Marker(el)
 		.setLngLat([obsStations[0].lng,obsStations[0].lat])
-		//.setPopup(popup)
+		.setPopup(popup)
 		.addTo(map);
 }
 

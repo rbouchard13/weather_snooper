@@ -240,7 +240,6 @@ async function showPosition(lat,lng) {
 	el.style.width = "25px";
 	el.style.height = "25px";
 	el.style.backgroundSize = '100%';
-	el.title = item.place_name;
 
 	new mapboxgl.Marker(el)
 		.setLngLat([obsStations[0].latitude, obsStations[0].longitude])

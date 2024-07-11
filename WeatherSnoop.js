@@ -242,7 +242,7 @@ async function showPosition(lat,lng) {
 	el.style.backgroundSize = '100%';
 
 	new mapboxgl.Marker(el)
-		.setLngLat([obsStations[0].latitude, obsStations[0].longitude])
+		.setLngLat([obsStations[0].longitude,obsStations[0].latitude])
 		//.setPopup(popup)
 		.addTo(map);
 }

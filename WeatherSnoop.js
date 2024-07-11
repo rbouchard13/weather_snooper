@@ -242,11 +242,11 @@ async function showPosition(lat,lng) {
 	el.style.width = "25px";
 	el.style.height = "25px";
 	el.style.backgroundSize = '100%';
-	el.style.title = obsStations[0].airport;
+	el.title = obsStations[0].airport;
 
 	new mapboxgl.Marker(el)
 		.setLngLat([obsStations[0].lng,obsStations[0].lat])
-		.setPopup(popup)
+		//.setPopup(popup)
 		.addTo(map);
 }
 

@@ -231,6 +231,21 @@ async function showPosition(lat,lng) {
 		essential: true
 	});
 	refresh = false;
+
+	const el = document.createElement('div');
+	el.className = 'marker';
+	el.id = "test";
+	el.style.color = "rgba(0, 0, 0, 0)";
+	el.innerHTML = "<img src='images/radar.png' width='30px' />"
+	el.style.width = "25px";
+	el.style.height = "25px";
+	el.style.backgroundSize = '100%';
+	el.title = item.place_name;
+
+	new mapboxgl.Marker(el)
+		.setLngLat([obsStations[0].latitude, obsStations[0].longitude])
+		//.setPopup(popup)
+		.addTo(map);
 }
 
 function addWeather(current) {

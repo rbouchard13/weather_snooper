@@ -64,10 +64,10 @@ async function logUse(lng,lat) {
 	let ip = await getIP.json();
 	console.log(ip.ip);
 	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
-	/*var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name*/
-	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip)
+	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
+	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip + ' | ' + address)
 	var logUpdate = await response.json();
-	/*console.log(logUpdate);*/	
+	console.log(logUpdate);	
 }
 
 function toggleForecast(period) {

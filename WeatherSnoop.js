@@ -251,7 +251,7 @@ async function showPosition(lat,lng) {
 }
 
 function addWeather(current) {
-	document.getElementById("station").innerHTML = obsStations[0].name + "<br>" +obsStations[0].airport;
+	document.getElementById("station").innerHTML = obsStations[0].name + "<br>" +obsStations[0].airport + "<img src='images/radar.png' width='25px' />";
 	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border: 1px solid black; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "' alt='Image Error'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";

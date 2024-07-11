@@ -67,8 +67,7 @@ async function logUse(lng,lat) {
 	/*var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name*/
 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip)
 	var logUpdate = await response.json();
-	console.log(logUpdate);
-	//var response = await fetch('http://localhost:5000/weathersnooper/access/' + address)		
+	console.log(logUpdate);	
 }
 
 function toggleForecast(period) {
@@ -106,33 +105,20 @@ async function getLocal() {
 }
 
 async function loadXMLDoc() {
-	/*var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-		getLocal()
-	  xmlParse(this);
-		  }
-	};
-	xhttp.open("GET", "https://w1.weather.gov/xml/current_obs/index.xml", true);
-	xhttp.send();
-	;
-	obsStations.sort(function (a, b) {
-		return a.distance - b.distance
-	})*/
 	obsStations = []
-	var test = await fetch('./data.json');
-	var test2 = await test.json();
-	for (let i = 0; i < test2.length; i++) {
-		let lat2 = test2[i].latitude
-		let lng2 = "" + test2[i].longitude + "";
+	var getObs = await fetch('./data.json');
+	var obs = await getObs.json();
+	for (let i = 0; i < obs.length; i++) {
+		let lat2 = obs[i].latitude
+		let lng2 = "" + obs[i].longitude + "";
 		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: test2[i].icao, lat: lat2, lng: lng2, distance: dist};
+		let data = {name: obs[i].icao, lat: lat2, lng: lng2, distance: dist};
 		obsStations.push(data);
 	}
 	obsStations.sort(function (a, b) {
 	return a.distance - b.distance;
-	console.log(obsStations);
 	});
+	console.log(obsStations);
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();
@@ -235,7 +221,7 @@ function convertTime(timeStamp) {
 async function getForecast(lat,lng) {
 	var response = await fetch('https://api.weather.gov/points/' + lat + ',' + lng + '');
 	var grid = await response.json(); 
-	forecastUrl = grid.properties.forecast;
+	let forecastUrl = grid.properties.forecast;
 	var response = await fetch(forecastUrl);
 	var forecast = await response.json();
 	if (response.status === 500) {
@@ -265,26 +251,6 @@ async function showPosition(lat,lng) {
 		essential: true
 	});
 	refresh = false;
-}
-
-async function xmlParse(xml) {	
-  	var i;
-  	var xmlDoc = xml.responseXML;
-  	var x = xmlDoc.getElementsByTagName("station");
-  	for (i = 0; i <x.length; i++) {
-		let lat2 = x[i].getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
-		let lng2 = "" + x[i].getElementsByTagName("longitude")[0].childNodes[0].nodeValue + "";
-		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: x[i].getElementsByTagName("station_id")[0].childNodes[0].nodeValue, lat: lat2, lng: lng2, distance: dist};
-		obsStations.push(data);
-	}
-	obsStations.sort(function (a, b) {
-		return a.distance - b.distance
-	})
-	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
-	var response = await fetch(url);
-	var current = await response.json();
-	addWeather(current);	
 }
 
 function addWeather(current) {

@@ -62,12 +62,10 @@ function loadMap() {
 async function logUse(lng,lat) {
 	let getIP = await fetch("https://api.ipify.org/?format=json");
 	let ip = await getIP.json();
-	console.log(ip.ip);
 	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip + ' | ' + address)
 	var logUpdate = await response.json();
-	/*console.log(logUpdate);*/	
 }
 
 function toggleForecast(period) {
@@ -101,7 +99,6 @@ async function loadXMLDoc() {
 	obsStations.sort(function (a, b) {
 	return a.distance - b.distance;
 	});
-	/*console.log(obsStations);*/
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();
@@ -293,7 +290,7 @@ function loadHourly(forecast) {
 		} else {
 			timePeriod = "AM";
 			newTime = Number(time[0]);
-			if (newTime === 00) {
+			if (newTime === '00') {
 				newTime = Number(12);
 			}
 		}

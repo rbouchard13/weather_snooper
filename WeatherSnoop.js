@@ -246,7 +246,7 @@ function addWeather(current) {
 	let pressure = (current.properties.barometricPressure.value / 100) * .0295301;
 	pressure = pressure.toFixed(2);
 	document.getElementById("currPressure").innerHTML = " " + pressure + "in";
-	/*if (current.properties.heatIndex.value !== null) {
+	if (current.properties.heatIndex.value !== null) {
 		let realfeel = Math.round((current.properties.heatIndex.value * 9/5) + 32);
 		document.getElementById("feelslike").innerHTML = "Feels Like:<span style='margin-left:5px;'>" + realfeel + "&#8457</span>"; 
 		return;}
@@ -255,7 +255,7 @@ function addWeather(current) {
 		document.getElementById("feels").innerHTML = "Feels Like:<span style='margin-left: 5px;'>" + realfeel + "&#8457</span>"; 
 		return;}
 	else {
-		document.getElementById("feels").innerHTML = ""}*/
+		document.getElementById("feels").innerHTML = ""}
 }
 
 function loadForecast(forecast) {

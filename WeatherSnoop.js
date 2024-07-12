@@ -67,7 +67,7 @@ async function logUse(lng,lat) {
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
 	var response = await fetch('https://api.13media13.com/weathersnooper/access/' + ip.ip + ' | ' + address)
 	var logUpdate = await response.json();
-	console.log(ip.ip + "|" + logupdate)
+	console.log(ip.ip + "|" + logUpdate)
 }
 
 function toggleForecast(period) {

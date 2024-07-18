@@ -1,4 +1,4 @@
-var obsStations,markers,radTiles = [];
+var radTiles = [];
 var lat, lng, getRad, eTime,activeAlerts;
 var refresh = true;
 var center = false;
@@ -55,6 +55,8 @@ function loadMap() {
 }
 
 function addMarkers(lng,lat){
+	let obsStations = [];
+	let markers = [];
 	var getObs = fetch('./data.json');
 	for (let i = 0; i < getObs.length; i++) {
 		let lat2 = getObs[i].latitude

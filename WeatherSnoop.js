@@ -125,7 +125,7 @@ async function loadXMLDoc() {
 	if (navigator.geolocation) {
 		latR = pos.coords.latitude;
 		lngR = pos.coords.longitude;
-		if (latR !== lat or lngR !== lng){
+		if (latR !== lat || lngR !== lng){
 			lat = latR;
 			lng = lngR;
 			markers.forEach((item) => {item.remove();});

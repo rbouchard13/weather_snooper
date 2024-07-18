@@ -108,7 +108,7 @@ async function loadXMLDoc() {
 						essential: true
 					});
 				}
-			}
+			});
 		} else {
 			console.log("new location  should have moved");
 		}

@@ -66,6 +66,7 @@ function addMarkers(lng,lat){
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;
 	});
+	console.log(obsStations);
     if (document.getElementById("radar")) {
         document.getElementById("radar").remove();
     }

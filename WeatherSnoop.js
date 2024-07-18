@@ -63,10 +63,12 @@ function loadMap() {
 function centerMap() {
 	if (center == true) {
  		center = false;
-		console.log("center off");
 	} else {
 		center = true;
-		console.log("center on");
+		map.flyTo({
+			center: [lng, lat],
+			essential: true
+		});
 	}
 }
 

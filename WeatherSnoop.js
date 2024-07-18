@@ -120,12 +120,10 @@ async function loadXMLDoc() {
 					marker.setLngLat([lng, lat]);
 					marker.addTo(map);
 					markers.push(marker);
-					if (center == true) {
-						map.flyTo({
-							center: [lng, lat],
-							essential: true
-						});
-					}
+					map.flyTo({
+						center: [lng, lat],
+						essential: true
+					});
 					/*const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
 					"" + obsStations[0].airport +""
 					);*/

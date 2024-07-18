@@ -127,13 +127,13 @@ async function loadXMLDoc() {
 						.setLngLat([obsStations[0].lng,obsStations[0].lat])
 						//.setPopup(popup)
 						.addTo(map);
-									refresh = false;
+					refresh = false;
+					console.log("new location  should have moved");
 					loadXMLDoc();
-					document.getElementById("radar").remove();
 				}
 			});
 		} else {
-			console.log("new location  should have moved");
+			console.log("no changes");
 		}
 	}
 	//-------------------------------------

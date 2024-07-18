@@ -116,13 +116,15 @@ async function loadXMLDoc() {
 					marker.setLngLat([lng, lat]);
 					marker.addTo(map);
 					markers.push(marker);
-					map.flyTo({
-						center: [lng, lat],
-						essential: true
-					});
-					const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+					if (center == true) {
+						map.flyTo({
+							center: [lng, lat],
+							essential: true
+						});
+					}
+					/*const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
 					"" + obsStations[0].airport +""
-					);
+					);*/
 					const el = document.createElement('div');
 					el.className = 'marker';
 					el.id = "radar";

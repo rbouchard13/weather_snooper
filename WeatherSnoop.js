@@ -63,10 +63,10 @@ function loadMap() {
 function centerMap() {
 	if (center == true) {
  		center = false;
-		alert("center off");
+		console.log("center off");
 	} else {
 		center = true;
-		alert("center on");
+		console.log("center on");
 	}
 }
 
@@ -100,7 +100,6 @@ function toggleForecast(period) {
 async function loadXMLDoc() {
 	//------------------------------------
 	if (lat) {
-		console.log("lat detected");
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((pos) => {
 				let latR = pos.coords.latitude;
@@ -139,13 +138,10 @@ async function loadXMLDoc() {
 						//.setPopup(popup)
 						.addTo(map);
 					refresh = false;
-					console.log("new location  should have moved");
 					loadXMLDoc();
 				}
 			});
-		} else {
-			console.log("no changes");
-		}
+		} 
 	}
 	//-------------------------------------
 	obsStations = []

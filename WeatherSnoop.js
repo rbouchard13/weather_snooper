@@ -101,7 +101,7 @@ function toggleForecast(period) {
 
 async function loadXMLDoc() {
 	//------------------------------------
-	if (lat) {
+	if (center) {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((pos) => {
 				let latR = pos.coords.latitude;

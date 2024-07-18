@@ -70,7 +70,6 @@ function centerMap() {
 		center: [lng, lat],
 		essential: true
 	});
-	}
 }
 
 async function logUse(lng,lat) {

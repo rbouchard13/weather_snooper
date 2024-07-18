@@ -87,6 +87,26 @@ function toggleForecast(period) {
 }
 
 async function loadXMLDoc() {
+	//------------------------------------
+	if (navigator.geolocation) {
+		latR = pos.coords.latitude;
+		lngR = pos.coords.longitude;
+		if (latR !== lat || lngR !== lng){
+			lat = latR;
+			lng = lngR;
+			markers.forEach((item) => {item.remove();});
+			markers = [];
+			obsStations = [];
+			loadXMLDoc();
+			document.getElementById("radar").remove();
+			map.flyTo({
+				center: [lng, lat],
+				//zoom: 8,
+				essential: true
+			});
+		}
+	}
+	//-------------------------------------
 	obsStations = []
 	var getObs = await fetch('./data.json');
 	var obs = await getObs.json();
@@ -121,26 +141,6 @@ async function loadXMLDoc() {
 		marker._color = "#18fc03";
 	}
 	refresh = false;
-	//------------------------------------
-	if (navigator.geolocation) {
-		latR = pos.coords.latitude;
-		lngR = pos.coords.longitude;
-		if (latR !== lat || lngR !== lng){
-			lat = latR;
-			lng = lngR;
-			markers.forEach((item) => {item.remove();});
-			markers = [];
-			obsStations = [];
-			loadXMLDoc();
-			document.getElementById("radar").remove();
-			map.flyTo({
-				center: [lng, lat],
-				//zoom: 8,
-				essential: true
-			});
-		}
-	}
-	//-------------------------------------
 }
 
 async function checkRadar() {

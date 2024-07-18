@@ -88,23 +88,27 @@ function toggleForecast(period) {
 
 async function loadXMLDoc() {
 	//------------------------------------
+	if (lat) {
 	if (navigator.geolocation) {
-		let latR = pos.coords.latitude;
-		let lngR = pos.coords.longitude;
-		if (latR !== lat || lngR !== lng){
-			lat = latR;
-			lng = lngR;
-			markers.forEach((item) => {item.remove();});
-			markers = [];
-			obsStations = [];
-			loadXMLDoc();
-			document.getElementById("radar").remove();
-			map.flyTo({
-				center: [lng, lat],
-				//zoom: 8,
-				essential: true
-			});
+		navigator.geolocation.getCurrentPosition((pos) => {
+			let latR = pos.coords.latitude;
+			let lngR = pos.coords.longitude;
+			if (latR !== lat || lngR !== lng){
+				lat = latR;
+				lng = lngR;
+				markers.forEach((item) => {item.remove();});
+				markers = [];
+				obsStations = [];
+				loadXMLDoc();
+				document.getElementById("radar").remove();
+				map.flyTo({
+					center: [lng, lat],
+					//zoom: 8,
+					essential: true
+				});
+			}
 		}
+	}
 	}
 	//-------------------------------------
 	obsStations = []

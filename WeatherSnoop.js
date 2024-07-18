@@ -54,9 +54,9 @@ function loadMap() {
 	}	
 }
 
-async function addMarkers(lng,lat){
-	var getObs = await fetch('./data.json');
-	var obs = await getObs.json();
+function addMarkers(lng,lat){
+	var getObs = fetch('./data.json');
+	var obs = getObs.json();
 	for (let i = 0; i < obs.length; i++) {
 		let lat2 = obs[i].latitude
 		let lng2 = "" + obs[i].longitude + "";

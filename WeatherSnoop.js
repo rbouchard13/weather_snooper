@@ -89,6 +89,7 @@ function toggleForecast(period) {
 async function loadXMLDoc() {
 	//------------------------------------
 	if (lat) {
+	console.log("lat detected")
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((pos) => {
 			let latR = pos.coords.latitude;
@@ -108,6 +109,8 @@ async function loadXMLDoc() {
 				});
 			}
 		}
+	} else {
+		console.log("new location  should have moved")
 	}
 	}
 	//-------------------------------------

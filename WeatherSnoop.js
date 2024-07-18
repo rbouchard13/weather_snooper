@@ -110,6 +110,7 @@ async function loadXMLDoc() {
 					lat = latR;
 					lng = lngR;
 					markers.forEach((item) => {item.remove();});
+					document.getElementById("radar").remove();
 					markers = [];
 					obsStations = [];
 					var marker = new mapboxgl.Marker({

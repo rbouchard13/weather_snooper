@@ -55,7 +55,6 @@ function loadMap() {
 }
 
 async function addMarkers(lng,lat){
-	obsStations,markers = []
 	var getObs = await fetch('./data.json');
 	var obs = await getObs.json();
 	for (let i = 0; i < obs.length; i++) {

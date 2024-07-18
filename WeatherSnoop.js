@@ -7,6 +7,7 @@ var getRad;
 var radTiles = [];
 var eTime;
 var refresh = true;
+var center = false;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 const bounds = [
@@ -57,6 +58,16 @@ function loadMap() {
 	} else {
 			alert("Geolocation is not supported by this browser.");
 	}	
+}
+
+function centerMap() {
+	if (center == true) {
+ 		center = false;
+		alert("center off");
+	} else {
+		center = true;
+		alert("center on");
+	}
 }
 
 async function logUse(lng,lat) {

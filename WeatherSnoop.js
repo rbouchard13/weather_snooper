@@ -58,7 +58,7 @@ function loadMap() {
 
 function addMarkers(lng,lat){
 	 fetch('./data.json')
-		.then))res) => {
+		.then((res) => {
 		if(!res.ok) {
 		throw new Error
 		    (`HTTP error! Status: ${res.status}`);

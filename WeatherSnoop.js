@@ -63,10 +63,10 @@ function addMarkers(lng,lat){
 		let data = {name: getObs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: getObs[i].airport};
 		obsStations.push(data);
 	}
+		console.log(obsStations);
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;
 	});
-	console.log(obsStations);
     if (document.getElementById("radar")) {
         document.getElementById("radar").remove();
     }

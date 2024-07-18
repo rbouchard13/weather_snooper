@@ -69,7 +69,6 @@ function addMarkers(lng,lat){
 		console.log(Obs))
 		.catch((error) => 
 		console.error("Unable to fetch data:", error));	
-	//var Obs = JSON.parse('./data.json');
 	for (let i = 0; i < Obs.length; i++) {
 		let lat2 = Obs[i].latitude
 		let lng2 = "" + Obs[i].longitude + "";

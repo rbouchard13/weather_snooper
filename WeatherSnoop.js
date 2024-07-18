@@ -419,6 +419,7 @@ function distance(lat, lat2, lng, lng2) {
 
 function newLoc(event) {
 	refresh = true;
+	center = false;
 	let loc = JSON.parse(JSON.stringify(event.lngLat));
 	let xlat = loc.lat - lat; xlat = xlat.toFixed(4);
 	let xlng = loc.lng - lng; xlng = xlng.toFixed(4);

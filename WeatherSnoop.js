@@ -89,8 +89,8 @@ function toggleForecast(period) {
 async function loadXMLDoc() {
 	//------------------------------------
 	if (navigator.geolocation) {
-		latR = pos.coords.latitude;
-		lngR = pos.coords.longitude;
+		let latR = pos.coords.latitude;
+		let lngR = pos.coords.longitude;
 		if (latR !== lat || lngR !== lng){
 			lat = latR;
 			lng = lngR;

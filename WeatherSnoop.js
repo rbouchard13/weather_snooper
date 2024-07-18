@@ -56,12 +56,11 @@ function loadMap() {
 
 function addMarkers(lng,lat){
 	var getObs = fetch('./data.json');
-	var obs = getObs.json();
-	for (let i = 0; i < obs.length; i++) {
-		let lat2 = obs[i].latitude
-		let lng2 = "" + obs[i].longitude + "";
+	for (let i = 0; i < getObs.length; i++) {
+		let lat2 = getObs[i].latitude
+		let lng2 = "" + getObs[i].longitude + "";
 		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: obs[i].airport};
+		let data = {name: getObs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: getObs[i].airport};
 		obsStations.push(data);
 	}
 	obsStations.sort(function (a, b) {

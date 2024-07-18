@@ -110,7 +110,24 @@ async function loadXMLDoc() {
 						center: [lng, lat],
 						essential: true
 					});
-					refresh = false;
+					const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+					"" + obsStations[0].airport +""
+					);
+					const el = document.createElement('div');
+					el.className = 'marker';
+					el.id = "radar";
+					el.style.color = "rgba(0, 0, 0, 0)";
+					el.innerHTML = "<img src='images/radar.png' width='30px' />"
+					el.style.width = "25px";
+					el.style.height = "25px";
+					el.style.backgroundSize = '100%';
+					el.title = obsStations[0].airport;
+				
+					new mapboxgl.Marker(el)
+						.setLngLat([obsStations[0].lng,obsStations[0].lat])
+						//.setPopup(popup)
+						.addTo(map);
+									refresh = false;
 					loadXMLDoc();
 					document.getElementById("radar").remove();
 				}

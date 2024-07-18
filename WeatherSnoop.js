@@ -100,13 +100,19 @@ async function loadXMLDoc() {
 					markers.forEach((item) => {item.remove();});
 					markers = [];
 					obsStations = [];
-					loadXMLDoc();
-					document.getElementById("radar").remove();
+					var marker = new mapboxgl.Marker({
+						color: "#18fc03"
+					})
+					marker.setLngLat([lng, lat]);
+					marker.addTo(map);
+					markers.push(marker);
 					map.flyTo({
 						center: [lng, lat],
-						//zoom: 8,
 						essential: true
 					});
+					refresh = false;
+					loadXMLDoc();
+					document.getElementById("radar").remove();
 				}
 			});
 		} else {

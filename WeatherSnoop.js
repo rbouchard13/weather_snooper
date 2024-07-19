@@ -1,6 +1,4 @@
-var radTiles = [];
-var obsStations = [];
-var markers = [];
+var obsStations,markers,radTiles = [];
 var lat, lng, getRad, eTime,activeAlerts;
 var refresh = true;
 var center = false;
@@ -34,7 +32,7 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
-async function loadMap() {
+function loadMap() {
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
   		container: 'map',
@@ -48,28 +46,24 @@ async function loadMap() {
 			lat = pos.coords.latitude;
 			lng = pos.coords.longitude;
 			logUse(lng,lat);
-			addMarkers(lng,lat);
-			//loadXMLDoc();
+			loadXMLDoc();
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
-	}
-	const getStations = async() => {
-		var getObs = await fetch('https://weathersnooper.com/data.json');
-		var Obs = await getObs.json();
-		for (let i = 0; i < Obs.length; i++) {
-			let lat2 = Obs[i].latitude
-			let lng2 = "" + Obs[i].longitude + "";
-			let dist = distance(lat, lat2, lng, lng2);
-			let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
-			obsStations.push(data);
-		}
-		loadXMLDoc();
-	}
+	}	
 }
 
-function addMarkers(lng,lat){
-	console.log(obsStations);
+async function addMarkers(lng,lat){
+	obsStations,markers = []
+	var getObs = await fetch('./data.json');
+	var obs = await getObs.json();
+	for (let i = 0; i < obs.length; i++) {
+		let lat2 = obs[i].latitude
+		let lng2 = "" + obs[i].longitude + "";
+		let dist = distance(lat, lat2, lng, lng2);
+		let data = {name: obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: obs[i].airport};
+		obsStations.push(data);
+	}
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;
 	});
@@ -109,16 +103,12 @@ function addMarkers(lng,lat){
 
 function centerMap() {
 	if (center == false) {
-	document.getElementById("center").src = './images/center_off.png';
         center = true;
         map.flyTo({
             center: [lng, lat],
             essential: true
         });
-	return;
 	}
-	center = false;
-	document.getElementById("center").src = './images/center.png';
 }
 
 async function logUse(lng,lat) {

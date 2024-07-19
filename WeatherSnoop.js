@@ -108,7 +108,10 @@ function centerMap() {
             center: [lng, lat],
             essential: true
         });
+	return;
 	}
+	center = false;
+	document.getElementById("center").src = './images/center.png';
 }
 
 async function logUse(lng,lat) {

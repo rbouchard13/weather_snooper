@@ -25,7 +25,7 @@ geocoder.on('result', (e) => {let geo = e.result;
 	obsStations = [];
 	refresh = true;
 	loadXMLDoc();
-});//
+});
 
 geocoder.on('clear', () => {
 	getLocation();

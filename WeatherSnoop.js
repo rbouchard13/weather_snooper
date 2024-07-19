@@ -1,12 +1,7 @@
-var obsStations = [];
-var lat;
-var lng;
-var markers = [];
-var activeAlerts;
-var getRad;
-var radTiles = [];
-var eTime;
+var obsStations,markers,radTiles = [];
+var lat, lng, getRad, eTime,activeAlerts;
 var refresh = true;
+var center = false;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidGhlZGFkYXMxMzEzIiwiYSI6ImNrdXNrOXdwbTB3M2Uybm82d2V1bXljbjgifQ.Qk2kDT-hQODQFqGghcr4lQ';
 const bounds = [
@@ -44,23 +39,80 @@ function loadMap() {
   		style: 'mapbox://styles/mapbox/satellite-v9',
 		center: [-98.35, 39.5],
   		zoom: 4,
-		//maxBounds: bounds
 	});
 	getRadar();
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((pos) => {
 			lat = pos.coords.latitude;
 			lng = pos.coords.longitude;
-			loadXMLDoc();
 			logUse(lng,lat);
+			loadXMLDoc();
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
 	}	
 }
 
+async function addMarkers(lng,lat){
+	obsStations,markers = []
+	var getObs = await fetch('./data.json');
+	var obs = await getObs.json();
+	for (let i = 0; i < obs.length; i++) {
+		let lat2 = obs[i].latitude
+		let lng2 = "" + obs[i].longitude + "";
+		let dist = distance(lat, lat2, lng, lng2);
+		let data = {name: obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: obs[i].airport};
+		obsStations.push(data);
+	}
+	obsStations.sort(function (a, b) {
+	    return a.distance - b.distance;
+	});
+    if (document.getElementById("radar")) {
+        document.getElementById("radar").remove();
+    }
+    markers.forEach((item) => {item.remove();});
+    var marker = new mapboxgl.Marker({
+        color: "#18fc03"
+    })
+    marker.setLngLat([lng, lat]);
+    marker.addTo(map);
+    markers.push(marker);
+    if (center) {
+        map.flyTo({
+            center: [lng, lat],
+            essential: true
+        });  
+    }
+    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+    "" + obsStations[0].airport +""
+    );
+    const el = document.createElement('div');
+    el.className = 'marker';
+    el.id = "radar";
+    el.style.color = "rgba(0, 0, 0, 0)";
+    el.innerHTML = "<img src='images/radar.png' width='30px' />"
+    el.style.width = "25px";
+    el.style.height = "25px";
+    el.style.backgroundSize = '100%';
+    el.title = obsStations[0].airport;
+
+    new mapboxgl.Marker(el)
+        .setLngLat([obsStations[0].lng,obsStations[0].lat])
+        .addTo(map);
+}
+
+function centerMap() {
+	if (center == false) {
+        center = true;
+        map.flyTo({
+            center: [lng, lat],
+            essential: true
+        });
+	}
+}
+
 async function logUse(lng,lat) {
-	let getIP = await fetch("https://api.ipify.org/?format=json");
+	let getIP = await fetch("https://ipinfo.io/json?");
 	let ip = await getIP.json();
 	var getGeo = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + lng + ',' + lat + '.json?types=address&limit=1&access_token=' + mapboxgl.accessToken +''); 
 	var geoResp = await getGeo.json(); let address = geoResp.features[0].place_name
@@ -86,24 +138,27 @@ function toggleForecast(period) {
 }
 
 async function loadXMLDoc() {
-	obsStations = []
-	var getObs = await fetch('./data.json');
-	var obs = await getObs.json();
-	for (let i = 0; i < obs.length; i++) {
-		let lat2 = obs[i].latitude
-		let lng2 = "" + obs[i].longitude + "";
-		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: obs[i].airport};
-		obsStations.push(data);
+	//------------------------------------
+	if (center) {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((pos) => {
+				let latR = pos.coords.latitude;
+				let lngR = pos.coords.longitude;
+				if (latR !== lat || lngR !== lng){
+					lat = latR;
+					lng = lngR;
+                    addMarkers(lng,lat);
+					refresh = false;
+					//loadXMLDoc();
+				}
+			});
+		} 
 	}
-	obsStations.sort(function (a, b) {
-	return a.distance - b.distance;
-	});
+	//-------------------------------------
 	url = 'https://api.weather.gov/stations/' + obsStations[0].name + '/observations/latest';
 	var response = await fetch(url);
 	var current = await response.json();
 	addWeather(current);
-	
   	getForecast(lat,lng);
   	if (refresh) showPosition(lat,lng);
 	checkRadar();
@@ -251,7 +306,7 @@ async function showPosition(lat,lng) {
 }
 
 function addWeather(current) {
-	document.getElementById("station").innerHTML = obsStations[0].name + "<br>" +obsStations[0].airport;
+	document.getElementById("station").innerHTML = obsStations[0].name + "<br><span style='display:flex;justify-content:center;align-items:center'>" +obsStations[0].airport + "<img src='images/radar.png' width='20px' style='margin-left:10px'/></span>";
 	document.getElementById("currIcon").innerHTML = "<img src='" + current.properties.icon + "' style='width: 80px; border: 1px solid black; border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.45);' title='" + current.properties.textDescription + "' alt='Image Error'>";
 	document.getElementById("currTemp").innerHTML = " " + Math.round((current.properties.temperature.value * 9/5) + 32) + "&#8457";
 	document.getElementById("currHumid").innerHTML = " " + Math.round(current.properties.relativeHumidity.value) + "&#37";

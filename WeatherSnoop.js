@@ -73,8 +73,7 @@ async function loadMap() {
 }
 
 function addMarkers(lng,lat){
-
-		console.log(obsStations);
+	console.log(obsStations);
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;
 	});

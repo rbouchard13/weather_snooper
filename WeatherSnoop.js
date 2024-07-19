@@ -57,6 +57,10 @@ function loadMap() {
 }
 
 async function addMarkers(lng,lat){
+    if (document.getElementById("radar")) {
+        document.getElementById("radar").remove();
+    }
+    markers.forEach((item) => {item.remove();});
 	obsStations,markers = []
 	var getObs = await fetch('./data.json');
 	var obs = await getObs.json();
@@ -70,10 +74,6 @@ async function addMarkers(lng,lat){
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;
 	});
-    if (document.getElementById("radar")) {
-        document.getElementById("radar").remove();
-    }
-    markers.forEach((item) => {item.remove();});
     var marker = new mapboxgl.Marker({
         color: "#18fc03"
     })

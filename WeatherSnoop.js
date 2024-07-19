@@ -39,7 +39,7 @@ async function loadMap() {
 		var getObs = await fetch('./data.json');
 	}
 	console.log(Obs);*/
-	var getObs = await fetch('https://weathersnooper.com/data.json');console.log(getObs);
+	var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
 	var Obs = await getObs.json();
 	for (let i = 0; i < Obs.length; i++) {
 		let lat2 = Obs[i].latitude

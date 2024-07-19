@@ -59,8 +59,8 @@ function loadMap() {
 function addMarkers(lng,lat){
 	var Obs = async () => {
 		var getObs = await fetch('./data.json');
-		console.log(getObs);
 	}
+	console.log(Obs);
 	//var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
 	//var Obs = JSON.parse(getObs);console.log(Obs);
 	for (let i = 0; i < Obs.length; i++) {

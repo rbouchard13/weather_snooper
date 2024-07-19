@@ -430,8 +430,8 @@ function newLoc(event) {
 		markers.forEach((item) => {item.remove();});
 		markers = [];
 		obsStations = [];
-		loadXMLDoc();
 		document.getElementById("radar").remove();
+		addMarkers(lng,lat);
 	} else {
 		return;
 	}

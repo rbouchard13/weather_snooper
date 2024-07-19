@@ -53,20 +53,19 @@ async function loadMap() {
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
-	}	
-}
-
-obsStations = async() => {
-	var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
-	var Obs = await getObs.json();
-	for (let i = 0; i < Obs.length; i++) {
-		let lat2 = Obs[i].latitude
-		let lng2 = "" + Obs[i].longitude + "";
-		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
-		obsStations.push(data);
 	}
-	loadXMLDoc();
+	obsStations = async() => {
+		var getObs = await fetch('https://weathersnooper.com/data.json');
+		var Obs = await getObs.json();
+		for (let i = 0; i < Obs.length; i++) {
+			let lat2 = Obs[i].latitude
+			let lng2 = "" + Obs[i].longitude + "";
+			let dist = distance(lat, lat2, lng, lng2);
+			let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
+			obsStations.push(data);
+		}
+		loadXMLDoc();
+	}
 }
 
 function addMarkers(lng,lat){

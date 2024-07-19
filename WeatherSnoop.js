@@ -34,7 +34,20 @@ geocoder.on('clear', () => {
 	obsStations = []; 
 });
 
-function loadMap() {
+async function loadMap() {
+	/*var Obs = async () => {
+		var getObs = await fetch('./data.json');
+	}
+	console.log(Obs);*/
+	var getObs = await fetch('https://weathersnooper.com/data.json');console.log(getObs);
+	var Obs = await getObs.json();
+	for (let i = 0; i < Obs.length; i++) {
+		let lat2 = Obs[i].latitude
+		let lng2 = "" + Obs[i].longitude + "";
+		let dist = distance(lat, lat2, lng, lng2);
+		let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
+		obsStations.push(data);
+	}
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
   		container: 'map',
@@ -57,19 +70,7 @@ function loadMap() {
 }
 
 function addMarkers(lng,lat){
-	var Obs = async () => {
-		var getObs = await fetch('./data.json');
-	}
-	console.log(Obs);
-	//var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
-	//var Obs = JSON.parse(getObs);console.log(Obs);
-	for (let i = 0; i < Obs.length; i++) {
-		let lat2 = Obs[i].latitude
-		let lng2 = "" + Obs[i].longitude + "";
-		let dist = distance(lat, lat2, lng, lng2);
-		let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
-		obsStations.push(data);
-	}
+
 		console.log(obsStations);
 	obsStations.sort(function (a, b) {
 	    return a.distance - b.distance;

@@ -106,12 +106,15 @@ function addMarkers(lng,lat){
 
 function centerMap() {
 	if (center == false) {
+	document.getElementById("center").src = './images/center_off.png';
         center = true;
         map.flyTo({
             center: [lng, lat],
             essential: true
         });
+	return;
 	}
+	document.getElementById("center").src = './images/center.png';
 }
 
 async function logUse(lng,lat) {

@@ -113,7 +113,7 @@ function centerMap() {
 	navigator.geolocation.getCurrentPosition((pos) => {
 		lat = pos.coords.latitude;
 		lng = pos.coords.longitude;
-		addMarkers(lng,lat);
+		addMarkers(lng,lat);}
         map.flyTo({
             center: [lng, lat],
             essential: true

@@ -54,7 +54,7 @@ async function loadMap() {
 	} else {
 			alert("Geolocation is not supported by this browser.");
 	}
-	obsStations = async() => {
+	const getStations = async() => {
 		var getObs = await fetch('https://weathersnooper.com/data.json');
 		var Obs = await getObs.json();
 		for (let i = 0; i < Obs.length; i++) {

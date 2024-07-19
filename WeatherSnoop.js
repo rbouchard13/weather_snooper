@@ -1,4 +1,6 @@
-var obsStations,markers,radTiles = [];
+var obsStations = [];
+var markers = [];
+var radTiles = [];
 var lat, lng, getRad, eTime,activeAlerts;
 var refresh = true;
 var center = false;

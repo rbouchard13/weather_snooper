@@ -114,6 +114,7 @@ function centerMap() {
         });
 	return;
 	}
+	center = false;
 	document.getElementById("center").src = './images/center.png';
 }
 

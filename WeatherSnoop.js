@@ -24,7 +24,7 @@ geocoder.on('result', (e) => {let geo = e.result;
 	markers = [];
 	obsStations = [];
 	refresh = true;
-	addmarkers(lng,lat);
+	addMarkers(lng,lat);
 });
 
 geocoder.on('clear', () => {

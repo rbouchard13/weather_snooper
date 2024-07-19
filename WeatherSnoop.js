@@ -57,8 +57,12 @@ function loadMap() {
 }
 
 function addMarkers(lng,lat){
-	var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
-	var Obs = JSON.parse(getObs);console.log(Obs);
+	var Obs = async () => {
+		var getObs = fetch('./data.json');
+		console.log(getObs);
+	}
+	//var getObs = fetch('https://weathersnooper.com/data.json');console.log(getObs);
+	//var Obs = JSON.parse(getObs);console.log(Obs);
 	for (let i = 0; i < Obs.length; i++) {
 		let lat2 = Obs[i].latitude
 		let lng2 = "" + Obs[i].longitude + "";

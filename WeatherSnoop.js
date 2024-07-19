@@ -110,10 +110,11 @@ function centerMap() {
         center = true;
 	document.getElementById("radar").remove()
 	document.getElementById("center").src = './images/center_off.png';
-	navigator.geolocation.getCurrentPosition((pos) => {
-		lat = pos.coords.latitude;
-		lng = pos.coords.longitude;
-		addMarkers(lng,lat);});
+		navigator.geolocation.getCurrentPosition((pos) => {
+			lat = pos.coords.latitude;
+			lng = pos.coords.longitude;
+			addMarkers(lng,lat);
+		})
         map.flyTo({
             center: [lng, lat],
             essential: true

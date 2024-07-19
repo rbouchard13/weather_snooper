@@ -104,6 +104,7 @@ async function addMarkers(lng,lat){
 function centerMap() {
 	if (center == false) {
         center = true;
+	document.getElementById("center").src = './images/center_off.png';
         map.flyTo({
             center: [lng, lat],
             essential: true

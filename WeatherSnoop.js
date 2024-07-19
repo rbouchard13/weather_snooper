@@ -48,6 +48,9 @@ async function loadMap() {
 		let data = {name: Obs[i].icao, lat: lat2, lng: lng2, distance: dist, airport: Obs[i].airport};
 		obsStations.push(data);
 	}
+	while (obsStations.length = 0) {
+		console.log("gathering data");
+	}
 	var element = document.getElementById('map');
 	map = new mapboxgl.Map({
   		container: 'map',

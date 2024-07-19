@@ -48,6 +48,7 @@ function loadMap() {
 			lat = pos.coords.latitude;
 			lng = pos.coords.longitude;
 			logUse(lng,lat);
+			addMarkers(lng,lat);
 			//loadXMLDoc();
 		})
 	} else {

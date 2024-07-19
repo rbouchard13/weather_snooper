@@ -46,7 +46,7 @@ function loadMap() {
 			lat = pos.coords.latitude;
 			lng = pos.coords.longitude;
 			logUse(lng,lat);
-			loadXMLDoc();
+			//loadXMLDoc();
 		})
 	} else {
 			alert("Geolocation is not supported by this browser.");
@@ -99,6 +99,7 @@ async function addMarkers(lng,lat){
     new mapboxgl.Marker(el)
         .setLngLat([obsStations[0].lng,obsStations[0].lat])
         .addTo(map);
+loadXMLDoc();
 }
 
 function centerMap() {
